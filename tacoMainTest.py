@@ -1,7 +1,7 @@
-from tacoKlasserTest import Room
-from tacoKlasserTest import Item
-from tacoKlasserTest import EnemyCharacter
-from tacoKlasserTest import Character
+from room import Room
+from item import Item
+from enemyCharacter import EnemyCharacter
+from character import Character
 from mastermind import MasterMind
 from gubee import Hangman
 import random
