@@ -119,7 +119,7 @@ def printPlayerUseState(currentItem: Item):
 
 # - Skriver ut olika val beroende på rum och om enemy lever eller inte
 
-def printPlayerChoises(currentRoom: Room): # Förenkla???
+def printPlayerChoises(currentRoom: Room): 
     checkEnemy = currentRoom.getEnemy()
     rooms = ['Room 1', 'Room 2', 'Room 3', 'Room 4', 'Room 5']
     # Kollar om man är i room1-room4
@@ -150,20 +150,8 @@ def printPlayerChoises(currentRoom: Room): # Förenkla???
 
 
 def printInventoryChoises(inventory):
-    count = 0
-    for i in range(len(inventory)):
-        count += 1
-    if count == 1:
-        print(f"Choises: | use {inventory[0].getItem()} |")
-    elif count == 2:
-        print(
-            f"Choises: | use {inventory[0].getItem()} | use {inventory[1].getItem()} |")
-    elif count == 3:
-        print(
-            f"Choises: | use {inventory[0].getItem()} | use {inventory[1].getItem()} | use {inventory[2].getItem()} |")
-    elif count == 4:
-        print(
-            f"Choises: | use {inventory[0].getItem()} | use {inventory[1].getItem()} | use {inventory[2].getItem()} | use {inventory[3].getItem()} |")
+    joinedList = " | use ".join(inventory)
+    print(f"Choises: | use {joinedList} |")
 
 # Ändrar rum beroende på vart man går (right, left, back)
 
