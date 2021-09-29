@@ -1,21 +1,22 @@
-
-from random import random
 import random
 
 
 class Item:
-    def __init__(self, name):
+    def __init__(self, name, minDamage, maxDamage):
         self.name = name
         self.damage = None
-        
+        self.maxDamage = maxDamage
+        self.minDamage = minDamage
 
     def getItem(self):
         return self.name
 
-    def setDamage(self, damage):
-        self.damage = random.randint(0, damage)
+    def setDamage(self):
+        self.damage = random.randint(self.minDamage, self.maxDamage)
         return self.damage
-    
+
     def getDamage(self):
         return self.damage
 
+    def whatCanThisBe(self):
+        return 'tacobaco'

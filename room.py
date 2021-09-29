@@ -1,29 +1,41 @@
 from __future__ import annotations
  
-class Room :
-    def __init__(self, name) :
+class Room:
+    def __init__(self, name):
         self.name = name
-        self.toNorth = None
-        self.toSouth = None
-        self.toWest = None
-        self.toEast = None
- 
-    def getName(self) :
+        self.toRight = None
+        self.toLeft = None
+        self.toBack = None
+        self.enemyName = None
+        self.enemy = None
+
+    def getName(self):
         return self.name
- 
-    def setRoomtoRight(self, room: Room) :
-        self.toNorth = room
-    def setRoomtoLeft(self, room: Room) :
-        self.toSouth = room
-    def setRoomToBack(self, room: Room) :
-        self.toEast = room
- 
-    def getRoomToRight(self) :
-        return self.toNorth
-    def getRoomToLeft(self) :
-        return self.toSouth
-    def getRoomToBack(self) :
-        return self.toEast
 
+    def setRoomtoRight(self, room: Room):
+        self.toRight = room
 
-  
+    def setRoomtoLeft(self, room: Room):
+        self.toLeft = room
+
+    def setRoomToBack(self, room: Room):
+        self.toBack = room
+
+    def getRoomToRight(self):
+        return self.toRight
+
+    def getRoomToLeft(self):
+        return self.toLeft
+
+    def getRoomToBack(self):
+        return self.toBack
+
+    def setEnemytoRoom(self, enemy: EnemyCharacter):
+        self.enemyName = enemy.getName()
+        self.enemy = enemy
+
+    def getEnemyInRoom(self):
+        return self.enemyName
+
+    def getEnemy(self):
+        return self.enemy
