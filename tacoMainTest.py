@@ -87,7 +87,7 @@ def printPlayerState(currentRoom: Room):
 # Skriver ut fight status | enemy HP och player HP och vad i inventroy man kan använda
 
 
-def printFightState(fightEnemy: EnemyCharacter, inventory: list):
+def printFightState(fightEnemy: EnemyCharacter, inventory):
     print("\n===========================")
     print(
         f"Fighting {fightEnemy.getName()} | HP: {fightEnemy.getHealth()}")
@@ -174,7 +174,7 @@ def printPlayerChoises(currentRoom: Room):
 # Skriver ut vilka vapen man kan använda baserat på vad som finns i inventory
 
 
-def printInventoryChoises(inventory: list):
+def printInventoryChoises(inventory):
     count = 0
     for i in range(len(inventory)):
         count += 1
@@ -205,7 +205,7 @@ def getRoomInDirection(currentRoom: Room, direction):
 # Lägger till Item i listan inventory beroende på vilken enemy som dödades
 
 
-def newItemWhenKilled(enemy, inventory: list):
+def newItemWhenKilled(enemy, inventory):
     if enemy == 'drunkman' and knife not in inventory:
         inventory.append(knife)
         print("** And picked up knife **")
@@ -231,7 +231,7 @@ def playAgain():
 # Printar ut Inventory vapen/// -- Lägga till mer grejer om vi skapar nya Items??
 
 
-def showInvetory(items: list):
+def showInvetory(items):
     print("\n ___________________________________")
     print("|          ** Inventory **          |")
     print("|-----------------------------------|")
@@ -258,12 +258,11 @@ bomb = Item("bomb", 6, 7)
 player = Character(50)
 
 
-def fightMode(currentRoom: Room, inventory: list):
+def fightMode(currentRoom: Room, inventory):
     fightEnemy = currentRoom.getEnemy()
     while fightEnemy.getHealth() > 0 and player.getHealth() > 0:
 
         printFightState(fightEnemy, inventory)
-        # ändra till siffror eller kanske tom ta bort use?
         command = input("What do you wish to do? ")
         subcommands = command.split(" ")
         if subcommands[0] == "use":
@@ -272,7 +271,6 @@ def fightMode(currentRoom: Room, inventory: list):
                 print("You are unable to use " + subcommands[1])
             else:
                 printPlayerUseState(item)
-                # Kanske ändra nedan till en egen funktion?
                 print(f"* You attack for: {item.setDamage()} dmg")
                 fightEnemy.takeDamage(item.getDamage())
                 if fightEnemy.getHealth() > 0:
@@ -306,7 +304,7 @@ while keepPlaying:
         player.takeDamage(10)
         currentRoom = getRoomInDirection(currentRoom, "back")
 
-    # Gör detta till en funktion??
+    
     if player.getHealth() <= 0:
         keepPlaying = playAgain()
         if keepPlaying == True:
@@ -322,8 +320,6 @@ while keepPlaying:
     command = input("What do you wish to do? ")
     subcommands = command.split(" ")
 
-    # Kanske ändra så att när enemey är död så har den status död?
-    # Istället som nu att den kollar currentRoom.enemyhealth < 0
     if subcommands[0] == "go":
         newRoom = getRoomInDirection(currentRoom, subcommands[1])
         if newRoom == None:
@@ -363,8 +359,5 @@ while keepPlaying:
         inventory[0] = fist
 
 
-# Ändra i mastermind så man ser hur många rounds kvar
-# Ändra så man måste skriva bokstäver i hänga gubbe
 
-#Ändra knaske inventory till dictionary
-#Lägg till map? som kanske skriver fil så man vet var man är
+
