@@ -37,7 +37,7 @@ def createWorld():
     game.setRoomToBack(firstRoom)  # Back om Game Room - Room 1
     game.setEnemytoRoom(air)  # //// Enemy till Game Room - Air
 
-    secondRoom.setRoomtoLeft(trap)  # ---- trapROOM??
+    secondRoom.setRoomtoLeft(trap)  
     secondRoom.setRoomtoRight(thirdRoom)  # Höger om Room 2 - Room 3
     secondRoom.setRoomToBack(firstRoom)  # Back om Room 2 - Room 1
     secondRoom.setEnemytoRoom(skeleton)  # Enemy to room (Skeleton)
@@ -118,56 +118,31 @@ def printPlayerUseState(currentItem: Item):
         )
 
 # - Skriver ut olika val beroende på rum och om enemy lever eller inte
-# Bara fram till rum 2, lägg till rum tre *** Denna borde kunna gå att förenkla??
 
-
-def printPlayerChoises(currentRoom: Room):
+def printPlayerChoises(currentRoom: Room): # Förenkla???
     checkEnemy = currentRoom.getEnemy()
-    if currentRoom.getName() == "Bar":
-        print("Choises:| go right | go left |")
-        print("---------------")
-    elif currentRoom.getName() == "Room 1" and checkEnemy.getHealth() <= 0:
+    rooms = ['Room 1', 'Room 2', 'Room 3', 'Room 4', 'Room 5']
+    # Kollar om man är i room1-room4
+    if currentRoom.getName() in rooms[:-1] and checkEnemy.getHealth() <= 0:
         print('Choises:| go right | go left | go back |')
         print("---------------")
-    elif currentRoom.getName() == "Room 1" and checkEnemy.getHealth() > 0:
+    # Kollar om man är i room1-room5
+    elif currentRoom.getName() in rooms and checkEnemy.getHealth() > 0:
         print(f"Choises:| fight {currentRoom.getEnemyInRoom()} | go back |")
         print("---------------")
-    elif currentRoom.getName() == "Room 2" and checkEnemy.getHealth() <= 0:
-        print('Choises:| go right | go left | go back |')
-        print("---------------")
-    elif currentRoom.getName() == "Room 2" and checkEnemy.getHealth() > 0:
-        print(
-            f'Choises:| fight {currentRoom.getEnemyInRoom()} | go back |')
-        print("---------------")
-
-    elif currentRoom.getName() == "Room 3" and checkEnemy.getHealth() <= 0:
-        print('Choises:| go right | go left | go back |')
-        print("---------------")
-    elif currentRoom.getName() == "Room 3" and checkEnemy.getHealth() > 0:
-        print(
-            f'Choises:| fight {currentRoom.getEnemyInRoom()} | go back |')
-        print("---------------")
-
-    elif currentRoom.getName() == "Room 4" and checkEnemy.getHealth() <= 0:
-        print('Choises:| go right | go left | go back |')
-        print("---------------")
-    elif currentRoom.getName() == "Room 4" and checkEnemy.getHealth() > 0:
-        print(
-            f'Choises:| fight {currentRoom.getEnemyInRoom()} | go back |')
-        print("---------------")
-
+    
     elif currentRoom.getName() == "Room 5" and checkEnemy.getHealth() <= 0:
         print('Choises:| go back |')
         print("---------------")
-
-    elif currentRoom.getName() == "Room 5" and checkEnemy.getHealth() > 0:
-        print(
-            f'Choises:| fight {currentRoom.getEnemyInRoom()} | go back |')
+    
+    elif currentRoom.getName() == "Bar":
+        print("Choises:| go right | go left |")
         print("---------------")
 
     elif currentRoom.getName() == "Toilet":
         print('Choises:| use toilet | go back |')
         print("---------------")
+
     elif currentRoom.getName() == "Game Room":
         print('Choises: | play | go back |')
 
