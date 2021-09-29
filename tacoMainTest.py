@@ -98,7 +98,6 @@ def printFightState(fightEnemy: EnemyCharacter, inventory):
 
 # Skriver ut vilket Item man använder
 
-
 def printPlayerUseState(currentItem: Item):
     currentItemList = ['fist', 'knife', 'sword', 'bomb']
     if currentItem.getItem() in currentItemList:
@@ -142,7 +141,10 @@ def printPlayerChoises(currentRoom: Room):
 # Skriver ut vilka vapen man kan använda baserat på vad som finns i inventory
 
 def printInventoryChoises(inventory):
-    joinedList = " | use ".join(inventory)
+    inventoryNames = []
+    for i in inventory:
+        inventoryNames.append(i.getItem())
+    joinedList = " | use ".join(inventoryNames)
     print(f"Choises: | use {joinedList} |")
 
 # Ändrar rum beroende på vart man går (right, left, back)
