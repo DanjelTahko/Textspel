@@ -100,18 +100,11 @@ def printFightState(fightEnemy: EnemyCharacter, inventory):
 
 
 def printPlayerUseState(currentItem: Item):
-    if currentItem.getItem() == "fist":
+    currentItemList = ['fist', 'knife', 'sword', 'bomb']
+    if currentItem.getItem() in currentItemList:
         print(
             f"\n- Using {currentItem.getItem()}")
-    elif currentItem.getItem() == "knife":
-        print(
-            f"\n- Using {currentItem.getItem()}")
-    elif currentItem.getItem() == "sword":
-        print(
-            f"\n- Using {currentItem.getItem()}")
-    elif currentItem.getItem() == "bomb":
-        print(
-            f"\n- Using {currentItem.getItem()}")
+
     elif currentItem.getItem() == "toilet":
         print(
             "\n- Using toilet"
@@ -148,13 +141,11 @@ def printPlayerChoises(currentRoom: Room):
 
 # Skriver ut vilka vapen man kan använda baserat på vad som finns i inventory
 
-
 def printInventoryChoises(inventory):
     joinedList = " | use ".join(inventory)
     print(f"Choises: | use {joinedList} |")
 
 # Ändrar rum beroende på vart man går (right, left, back)
-
 
 def getRoomInDirection(currentRoom: Room, direction):
 
@@ -166,7 +157,6 @@ def getRoomInDirection(currentRoom: Room, direction):
         return currentRoom.getRoomToBack()
 
 # Lägger till Item i listan inventory beroende på vilken enemy som dödades
-
 
 def newItemWhenKilled(enemy, inventory):
     if enemy == 'drunkman' and knife not in inventory:
