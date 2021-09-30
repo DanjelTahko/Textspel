@@ -14,5 +14,14 @@ class Character:
 
     def setPlayerHealth(self, health):
         self.hp = health
+    
+    def addCoins(self, coins):
+        self.coins += coins
+
+    def loseCoins(self, coins):
+        self.coins -= coins
+    
+    def getCoins(self):
+        return self.coins
 
    

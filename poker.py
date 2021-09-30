@@ -1,10 +1,10 @@
+from character import Character
 import random
 
 
 class Poker:
 
-    def __init__(self, name, coins):
-        self.name = name
+    def __init__(self, coins):
         self.coins = coins
 
     def buildDeck(self):
@@ -33,12 +33,12 @@ class Poker:
 
     def printState(self, computerCards, myCards):
         print(f"\n\nDealers hand:{computerCards}\n")
-        print(f"{self.name}'s' hand:{myCards}\n")
+        print(f"Players hand:{myCards}\n")
 
     def printingWelcome(self):
-        print("\n=================")
-        print("Simple Black Jack")
-        print("=================")
+        print("\n=====================")
+        print("  Simple Black Jack")
+        print("=====================")
 
     def checkCard(self, cards):
         value = [0]
@@ -163,7 +163,7 @@ class Poker:
             if chek == True:
                 active == False
                 break
-            
+
             # Player input | HIT or STAND?
             again = input("hit or stand? ")
             if again == "hit":
@@ -187,28 +187,52 @@ class Poker:
     def play(self):
         deck = self.buildDeck()
         self.shuffle(deck)
+        coins = self.coins
+        blackJack = True
 
-        playerPlayAgain = True
-        
+        playerPlayAgain = True  # Vad gör denna?
+        winner = True  # Vad gör denna?
 
-        self.printingWelcome()
-        self.playingRound(playerPlayAgain, deck)
-           
+        while blackJack:
+            self.printingWelcome()
+            print(f"Player coins: | {coins} |")
+            startPlaying = input("\nplay or quit? : ")
 
-#name = input("Write your name: ")
-player = Poker("Daniel", 20)
-yesyesyes = True
-while yesyesyes:
-    player.play()
-    againnn = input("Do you wanna play again? y/n")
-    if againnn == 'y':
-        player.play()
-    else:
+            if startPlaying == "play":
+                bet = int(input("- Place bet : "))
+
+                if bet == 0:
+                    print("*You have to bet atleast 1 coin.")
+
+                elif bet <= coins and bet > 0:
+                    winner = self.playingRound(
+                        playerPlayAgain, deck)  # Return True or False
+                    if winner == True:
+                        coins += bet
+                    else:
+                        coins -= bet
+
+                else:
+                    print("*You don't have that amount.")
+
+            elif startPlaying == "quit":
+                blackJack = False
+
+            else:
+                print(f"\nI can't understand what '{startPlaying}' means.")
+
         print("\nHope to see you again!")
-        yesyesyes = False
 
 
-# 1. bet 
+player = Character(50)
+player.addCoins(50)
+player_coins = player.getCoins()
+#name = input("Write your name: ")
+bj = Poker(player_coins)
+bj.play()
+
+
+# 1. bet
 # 2. deal()
 # 3. double | hit | stand (endast jag spelar?)
 # 4. dealer plays
