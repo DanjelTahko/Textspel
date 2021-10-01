@@ -14,7 +14,7 @@ def createWorld():
     thirdRoom = Room("Room 3")
     fourthRoom = Room("Room 4")
     fifthRoom = Room("Room 5")
-    toilet = Room("Toilet")
+    shop = Room("Shop")
     game = Room("Game Room")
     hangmanRoom = Room("Hangman Room")
     trap = Room("Trap")
@@ -26,9 +26,9 @@ def createWorld():
     beholder = EnemyCharacter('beholder', 1000, 50, 100)
 
     bar.setRoomtoRight(firstRoom)
-    bar.setRoomtoLeft(toilet)  # Vänstar om BAR - Toilet
+    bar.setRoomtoLeft(shop)  # Vänstar om BAR - Shop
     bar.setEnemytoRoom(air)  # //// Enemy till BAR - Air
-    toilet.setRoomToBack(bar)  # Back om TOILET - Bar
+    shop.setRoomToBack(bar)  # Back om Shop - Bar
 
     firstRoom.setRoomtoRight(game)  # Höger om Room 1 - Game Room
     firstRoom.setRoomtoLeft(secondRoom)  # Vänster om Room 1 - Room 2
@@ -50,30 +50,28 @@ def createWorld():
     fourthRoom.setRoomtoRight(fifthRoom)
     fourthRoom.setRoomtoLeft(fifthRoom)
     fourthRoom.setRoomToBack(thirdRoom)
-    fourthRoom.setEnemytoRoom(EnemyCharacter('skeleton', 25, 2, 5))
+    fourthRoom.setEnemytoRoom(EnemyCharacter('skeleton', 50, 2, 5))
 
     fifthRoom.setRoomToBack(fourthRoom)
     fifthRoom.setEnemytoRoom(beholder)
 
     hangmanRoom.setRoomToBack(thirdRoom)
-    trap.setRoomToBack(toilet)
+    trap.setRoomToBack(bar)
 
     return bar
 
 # Kollar om valet USE finns i inventory och returnar ITEM
 
 
-def useItem(choise, inventory):
-    if choise == "fist" and fist in inventory:
+def useItem(choice, inventory):
+    if choice == "fist" and fist in inventory:
         return fist
-    elif choise == "knife" and knife in inventory:
+    elif choice == "knife" and knife in inventory:
         return knife
-    elif choise == "sword" and sword in inventory:
+    elif choice == "sword" and sword in inventory:
         return sword
-    elif choise == 'bomb' and bomb in inventory:
+    elif choice == 'bomb' and bomb in inventory:
         return bomb
-    elif choise == "toilet" and currentRoom.getName() == "Toilet":
-        return toilet
 
 # Skriver ut status | player HP & vilket rum man är i
 
@@ -93,7 +91,7 @@ def printFightState(fightEnemy: EnemyCharacter, inventory):
         f"Fighting {fightEnemy.getName()} | HP: {fightEnemy.getHealth()}")
     print("---------------------------")
     print(f"Player HP: {player.getHealth()} ♥")
-    printInventoryChoises(inventory)
+    printInventoryChoices(inventory)
     print("---------------------------")
 
 # Skriver ut vilket Item man använder
@@ -111,41 +109,41 @@ def printPlayerUseState(currentItem: Item):
 
 # - Skriver ut olika val beroende på rum och om enemy lever eller inte
 
-def printPlayerChoises(currentRoom: Room): 
+def printPlayerChoices(currentRoom: Room): 
     checkEnemy = currentRoom.getEnemy()
     rooms = ['Room 1', 'Room 2', 'Room 3', 'Room 4', 'Room 5']
     # Kollar om man är i room1-room4
     if currentRoom.getName() in rooms[:-1] and checkEnemy.getHealth() <= 0:
-        print('Choises:| go right | go left | go back |')
+        print('Choices:| go right | go left | go back |')
         print("---------------")
     # Kollar om man är i room1-room5
     elif currentRoom.getName() in rooms and checkEnemy.getHealth() > 0:
-        print(f"Choises:| fight {currentRoom.getEnemyInRoom()} | go back |")
+        print(f"Choices:| fight {currentRoom.getEnemyInRoom()} | go back |")
         print("---------------")
     
     elif currentRoom.getName() == "Room 5" and checkEnemy.getHealth() <= 0:
-        print('Choises:| go back |')
+        print('Choices:| go back |')
         print("---------------")
     
     elif currentRoom.getName() == "Bar":
-        print("Choises:| go right | go left |")
+        print("Choices:| go right | go left |")
         print("---------------")
 
     elif currentRoom.getName() == "Toilet":
-        print('Choises:| use toilet | go back |')
+        print('Choices:| use toilet | go back |')
         print("---------------")
 
     elif currentRoom.getName() == "Game Room":
-        print('Choises: | play | go back |')
+        print('Choices: | play | go back |')
 
 # Skriver ut vilka vapen man kan använda baserat på vad som finns i inventory
 
-def printInventoryChoises(inventory):
+def printInventoryChoices(inventory):
     inventoryNames = []
     for i in inventory:
         inventoryNames.append(i.getItem())
     joinedList = " | use ".join(inventoryNames)
-    print(f"Choises: | use {joinedList} |")
+    print(f"Choices: | use {joinedList} |")
 
 # Ändrar rum beroende på vart man går (right, left, back)
 
@@ -203,7 +201,7 @@ def showInvetory(items):
     print(" ----------------------------------- ")
 
 
-toilet = Item("toilet", 0, 0)
+
 fist = Item("fist", 2, 3)
 knife = Item("knife", 0, 6)
 sword = Item("sword", 1, 15)
@@ -271,7 +269,7 @@ while keepPlaying:
             break
 
     printPlayerState(currentRoom)
-    printPlayerChoises(currentRoom)
+    printPlayerChoices(currentRoom)
     command = input("What do you wish to do? ")
     subcommands = command.split(" ")
 
@@ -315,4 +313,4 @@ while keepPlaying:
 
 
 
-
+# Ändra så alla rum heter något istället för häger eller vänster?
