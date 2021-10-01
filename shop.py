@@ -123,6 +123,3 @@ bomb = Item("bomb", 6, 7)
 # Remove items from main
 # Add potions with own Potion class
 
-player = Character(50)
-player.addCoins(100)
-inStore(player)

@@ -3,8 +3,8 @@ import random
 
 class Poker:
 
-    def __init__(self, coins):
-        self.coins = coins
+    def __init__(self):
+        pass
 
     def buildDeck(self):
 
@@ -97,6 +97,12 @@ class Poker:
         elif valueDealer > valuePlayer:
             return False
 
+    def printFinalValue(self, playerHand, dealerHand):
+        player = self.getFinalValue(self.getCardsValueList(playerHand))
+        dealer = self.getFinalValue(self.getCardsValueList(dealerHand))
+        print(f"Your value: {player} | Dealer value: {dealer}")
+
+
     def playingRound(self, deck):
     
         playerHand = []
@@ -137,6 +143,7 @@ class Poker:
             if self.getFinalValue(self.getCardsValueList(playerHand)) > 21:
                 dealerHand.append(self.dealOneCard(deck))
                 self.printCards(dealerHand, playerHand)
+                self.printFinalValue(playerHand, dealerHand)
                 return False
 
             while self.getFinalValue(self.getCardsValueList(dealerHand)) < 17:
@@ -145,12 +152,13 @@ class Poker:
             
             p_checkWinner = self.getFinalValue(self.getCardsValueList(playerHand))
             d_checkWinner = self.getFinalValue(self.getCardsValueList(dealerHand))
+            self.printFinalValue(playerHand, dealerHand)
             return self.checkWinner(p_checkWinner,d_checkWinner)
 
-    def play(self):
-        coins = self.coins
+    def play(self, player: Character):
         
         while True:
+            coins = player.getCoins()
             # - Skapar kortlek
             deck = self.buildDeck()
             # - Blandar kortlek
@@ -169,14 +177,14 @@ class Poker:
                 elif bet <= coins and bet > 0:
                     winner = self.playingRound(deck)  # Return True or False
                     if winner == True:
-                        print("You win!")
-                        coins += bet
+                        print("\nYOU WIN!")
+                        player.addCoins(bet)
                     elif winner == None:
-                        print("TIE!")
+                        print("\nPUSH!")
                         continue
                     else:
-                        print("You lose!")
-                        coins -= bet
+                        print("\nYOU LOSE!")
+                        player.loseCoins(bet)
 
                 else:
                     print("*You don't have that amount.")
@@ -188,3 +196,5 @@ class Poker:
                 print(f"\nI don't understand what '{startPlaying}' means.")
 
         print("\nHope to see you again!")
+
+
