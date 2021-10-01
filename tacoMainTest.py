@@ -160,7 +160,7 @@ def getRoomInDirection(currentRoom: Room, direction):
 
 def newItemWhenKilled(enemy, inventory):
     if enemy == 'drunkman' and knife not in inventory:
-        inventory.append(knife)
+        player.addToInventory(knife)
         print("** And picked up knife **")
     elif enemy == 'skeleton' and sword not in inventory:
         inventory.append(sword)
@@ -209,6 +209,8 @@ bomb = Item("bomb", 6, 7)
 
 
 player = Character(50)
+player.addToInventory(fist)
+inventory = player.getInventory()
 
 
 def fightMode(currentRoom: Room, inventory):
@@ -241,23 +243,23 @@ def fightMode(currentRoom: Room, inventory):
 currentRoom = createWorld()
 mastermind = MasterMind()
 hangman = Hangman()
-inventory = [fist]
 keepPlaying = True
 while keepPlaying:
 
+    # Om currentRoom är Hangman
     if currentRoom.getName() == "Hangman Room":
-        alive = hangman.play()
-        if alive == True:
+        if hangman.play():
             currentRoom = getRoomInDirection(currentRoom, "back")
         else:
             player.setPlayerHealth(0)
 
+    # Om currentRoom är Trap
     if currentRoom.getName() == "Trap":
         print("\nYou walked into a trap & lost 10 ♥ !!!!")
         player.takeDamage(10)
         currentRoom = getRoomInDirection(currentRoom, "back")
 
-    
+    # Om player HP är 0 (dvs om man är död!)
     if player.getHealth() <= 0:
         keepPlaying = playAgain()
         if keepPlaying == True:
@@ -295,8 +297,7 @@ while keepPlaying:
 
     if command == "play":
         if currentRoom.getName() == 'Game Room':
-            moreHealth = mastermind.play()
-            if moreHealth == True:
+            if mastermind.play():
                 print("\nCongrats player gets 50♥ health")
                 player.gainHealth(50)
         else:
