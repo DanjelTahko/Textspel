@@ -9,9 +9,8 @@ def mainMenu():
     print("|--------------------|")
     print("| 1. Weapons         |")
     print("| 2. Potions         |")
-    print("| 3. Health          |")
     print("|--------------------|")
-    print("| 4. Quit            |") 
+    print("| 3. Quit            |") 
     print(" -------------------- ") 
 
 def weaponMenu():
@@ -78,7 +77,7 @@ def inStore(player: Character):
                     player.loseCoins(50)
 
                 elif weaponChoice.isdigit() and int(weaponChoice) == 5 and coins >= 50 and "bomb" not in getItemsFromInventory(inventory):
-                    print("* Added bomb to inventory") # (coins -= 50)
+                    print("* Added bombs to inventory") # (coins -= 50)
                     player.addToInventory(bomb)
                     player.loseCoins(50)
 
@@ -104,6 +103,12 @@ def inStore(player: Character):
                     break
                 else:
                     print("Not valid choice")
+
+        elif menuChoice.isdigit() and int(menuChoice) == 3:
+            break
+
+        else:
+            print("Not valid choice")
 
 #Weapons
 knife = Item("knife", 0, 6)
