@@ -91,24 +91,24 @@ def inStore(player: Character):
                 print(f"Your coins: {player.getCoins()}")
                 potionChoice = input("Select menu option: ")
                 if potionChoice.isdigit() and int(potionChoice) == 1 and player.getCoins() >=10 :
-                    print("* Added small health potion to inventory") # (coins -= 10)
+                    print("* Added small health potion to inventory") 
                     player.addToInventory(healthSmall)
                     player.loseCoins(10)
 
                 elif potionChoice.isdigit() and int(potionChoice) == 2 and player.getCoins() >= 15:
-                    print("* Added large health potion to inventory") # (coins -= 15)
+                    print("* Added large health potion to inventory") 
                     player.addToInventory(healthLarge)
                     player.loseCoins(15)
 
                 elif potionChoice.isdigit() and int(potionChoice) == 3 and player.getCoins() >= 20:
-                    print("* Added critical hit potion to inventory") # (coins -= 20)
+                    print("* Added critical hit potion to inventory") 
                     player.addToInventory(criticHit)
                     player.loseCoins(20)
 
-                elif potionChoice.isdigit() and int(potionChoice) == 4 and player.getCoins() >= 1000:
-                    print("* Added killing punch potion to inventory") # (coins -= 1000)
+                elif potionChoice.isdigit() and int(potionChoice) == 4 and player.getCoins() >= 10: ### Ändra tillbaka till 1000
+                    print("* Added killing punch potion to inventory") 
                     player.addToInventory(killerPunch)
-                    player.loseCoins(1000)
+                    player.loseCoins(10)
 
                 elif potionChoice.isdigit() and int(potionChoice) == 5:
                     break
@@ -128,9 +128,9 @@ axe = Item("axe", 1, 10)
 sword = Item("sword", 3, 15)
 bomb = Item("bomb", 6, 7)
 healthSmall = Item("small health", 0, 0)
-healthLarge = Item("small health", 0, 0)
-criticHit = Item("small health", 0, 0)
-killerPunch = Item("small health", 0, 0)
+healthLarge = Item("large health", 0, 0)   
+criticHit = Item("critical hit", 0, 0)
+killerPunch = Item("killer punch", 0, 0)
 
 #Potions
 

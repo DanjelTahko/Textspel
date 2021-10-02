@@ -7,6 +7,7 @@ from mastermind import MasterMind
 from gubee import Hangman
 import random
 import shop
+import functions as f
 
 
 def createWorld():
@@ -70,7 +71,13 @@ def createWorld():
 # Kollar om valet USE finns i inventory och returnar ITEM
 
 
-def useItem(choice, inventory):
+def useItem(input, inventory):
+
+    if len(input) == 3:
+        choice = " ".join(input[1:])
+    else:
+        choice = input[1]
+                
     inventoryString = shop.getItemsFromInventory(inventory)
     if choice in inventoryString:
         index = inventoryString.index(choice)
@@ -101,13 +108,36 @@ def printFightState(fightEnemy: EnemyCharacter,player:Character, inventory):
 
 # Skriver ut vilket Item man använder
 
-def printPlayerUseState(currentItem: Item, inventory):
+def printPlayerUseState(currentItem: Item, player:Character, inventory):
     
     if currentItem.getItem() in shop.getItemsFromInventory(inventory):
-        print(
+
+        if currentItem.getItem() == "small health":
+            print("\n- Drinking small health potion")
+            print("* Gains 25 ♥")
+            player.gainHealth(25)
+            inventory.remove(currentItem)
+
+        elif currentItem.getItem() == "large health":
+            print("\n- Drinking large health potion")
+            print("* Gains 50 ♥")
+            player.gainHealth(50)
+            inventory.remove(currentItem)
+
+        elif currentItem.getItem() == "critical hit":
+            print("\n- Drinking critical hit potion")
+            None
+
+        elif currentItem.getItem() == "killer punch":
+            print("\n- Drinking killer punch potion")
+            print("You've unlocked the killing punch")
+            inventory.remove(currentItem)
+            fist = Item("fist", 1000, 1000)
+            inventory[0] = fist
+
+        else:
+            print(
             f"\n- Using {currentItem.getItem()}")
-
-
 
 # - Skriver ut olika val beroende på rum och om enemy lever eller inte
 
@@ -171,41 +201,44 @@ def newItemWhenKilled(enemy, player:Character):
         player.addCoins(30)
         print("** And picked up 30 coins **")
 
-
 # Printar ut Inventory vapen/// -- Lägga till mer grejer om vi skapar nya Items??
 
 def showInvetory(items):
-    print("\n ___________________________________")
-    print("|          ** Inventory **          |")
-    print("|-----------------------------------|")
+    print("\n ---------------------------------------")
+    print("             ** Inventory **           ")
+    print(" --------------------------------------- ")
     for weapon in items:
         if weapon.getItem() == 'fist':
-            print("| Fist: does damage between 2 - 3    |")
+            print("\n| Fist | : does damage between 2 - 3    ")
         if weapon.getItem() == 'knife':
-            print("| Knife: does damage between 0 - 6   |")
+            print("\n| Knife | : does damage between 0 - 6   ")
         if weapon.getItem() == 'spear':
-            print("| Spear: does damage between 1 - 8   |")
+            print("\n| Spear | : does damage between 1 - 8   ")
         if weapon.getItem() == 'axe':
-            print("| Axe: does damage between 1 - 10    |")
+            print("\n| Axe | : does damage between 1 - 10    ")
         if weapon.getItem() == 'sword':
-            print("| Sword: does damage between 3 - 15  |")
+            print("\n| Sword | : does damage between 3 - 15  ")
         if weapon.getItem() == 'bomb':
-            print("| Bomb: does damage between 6 - 7    |")
+            print("\n| Bomb | : does damage between 6 - 7    ")
+    print("\n --------------------------------------- ")
 
-        # lägg till så den visar hur många man har!
-        if weapon.getItem() == 'small health':
-            print("| Small health potion: heals 25 HP   |")
-        if weapon.getItem() == 'large health':
-            print("| Large health potion: heals 50 HP   |")
-        if weapon.getItem() == 'critical hit':
-            print("| Critical hit potion: critic hits   |")
-        if weapon.getItem() == 'large health':
-            print("| Killing punch potion: instant kill |")
-
-    print(" ----------------------------------- ")
-
-
-
+    checkList=[]
+    for potion in items:
+        amount = items.count(potion)
+        if potion.getItem() == 'small health' and 'small health' not in checkList:
+            print(f"\n| {amount}x | Small health potion: heals 25 HP   ")
+            checkList.append('small health')           
+        if potion.getItem() == 'large health' and 'large health' not in checkList:
+            print(f"\n| {amount}x | Large health potion: heals 50 HP   ")
+            checkList.append('large health')
+        if potion.getItem() == 'critical hit' and 'critical hit' not in checkList:
+            print(f"\n| {amount}x | Critical hit potion: critic hits   ")
+            checkList.append('critical hit')
+        if potion.getItem() == 'killer punch' and 'killer punch' not in checkList:
+            print(f"\n| {amount}x | Killing punch potion: instant kill ")
+            checkList.append('killer punch')
+    if len(checkList) > 0:
+        print("\n --------------------------------------- ")
 
 def fightMode(currentRoom: Room, player: Character, inventory):
     fightEnemy = currentRoom.getEnemy()
@@ -215,11 +248,12 @@ def fightMode(currentRoom: Room, player: Character, inventory):
         command = input("What do you wish to do? ")
         subcommands = command.split(" ")
         if subcommands[0] == "use":
-            item = useItem(subcommands[1], inventory)
+            item = useItem(subcommands, inventory)
             if item == None:
-                print("You are unable to use " + subcommands[1])
+                print("You are unable to " + command)
             else:
-                printPlayerUseState(item, inventory)
+                printPlayerUseState(item, player, inventory)
+                #Ändra så detta inte syns ifall man drinker en potion / Eller?
                 print(f"* You attack for: {item.setDamage()} dmg")
                 fightEnemy.takeDamage(item.getDamage())
                 if fightEnemy.getHealth() > 0:
@@ -274,20 +308,22 @@ def start():
         if subcommands[0] == "go":
             newRoom = getRoomInDirection(currentRoom, subcommands[1])
             if newRoom == None:
-                print("You are unable to move " + subcommands[1])
+                print("You are unable to " + command)
             else:
                 currentRoom = newRoom
 
         if subcommands[0] == "use":
-            item = useItem(subcommands[1], inventory)
+            item = useItem(subcommands, inventory)
             if item == None:
-                print("You are unable to use " + subcommands[1])
+                print("You are unable to " + command)
             else:
-                printPlayerUseState(item, inventory)
+                printPlayerUseState(item, player, inventory)
+            
+
 
         if subcommands[0] == 'fight':
             if subcommands[1] != currentRoom.getEnemyInRoom():
-                print("You are unable to fight " + subcommands[1])
+                print("You are unable to " + command)
             else:
                 fightMode(currentRoom,player, inventory)
 
@@ -296,6 +332,7 @@ def start():
                 if mastermind.play():
                     print("\nCongrats player gets 10 coins")
                     player.addCoins(10)
+
             elif currentRoom.getName() == "Black Jack Room":
                 blackjack.play(player)
 
@@ -321,14 +358,21 @@ if __name__ == "__main__":
     while True:
         print("\n -------------------------")
         print("|         Made by         |")
-        print("|  * Daniel & Jonatans *  |")
+        print("|   * Daniel & Jonatan *  |")
         print("|                         |")
-        print("|   'new game' to begin   |")
+        print("|  'help' for how to play |")
+        print("|  'new game' to begin    |")
+        print("|  'quit' to quit program |")
         print(" -------------------------")
         if input("-> ") == "new game":
             start()
+        elif input("-> ") == "help":
+            f.help()
+        elif input("-> ") == "quit":
+            break
 
 
 # Ändra så alla rum heter något istället för häger eller vänster?
 # Ändra så man kan välja saker ut inventory när som helst
 # Ändra alla player state osv till YOU
+# Ändra kanske så man måste skriva small health istället för bara small i printPlayerUSe func
