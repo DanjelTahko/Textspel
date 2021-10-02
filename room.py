@@ -35,7 +35,7 @@ class Room:
         self.enemyName = enemy.getName()
         self.enemy = enemy
 
-    def getEnemyInRoom(self):
+    def getEnemyInRoomName(self):
         return self.enemyName
 
     def getEnemy(self):
