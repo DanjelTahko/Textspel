@@ -88,9 +88,10 @@ def useItem(input, inventory):
 
 
 def printPlayerState(currentRoom: Room, player: Character):
-    print("\n-------------------------")
+    print("\n-------------------------------")
     print(f"Location: {currentRoom.getName()}")
-    print(f"Player: | HP: {str(player.getHealth())} ♥ | Coins: {player.getCoins()} |\n")
+    print(f"Health: {str(player.getHealth())} ♥")
+    print(f"Coins: {player.getCoins()} ")
     
 
 # Skriver ut fight status | enemy HP och player HP och vad i inventroy man kan använda
@@ -140,26 +141,24 @@ def printPlayerUseState(currentItem: Item, player:Character, inventory):
 # - Skriver ut olika val beroende på rum och om enemy lever eller inte
 
 def printPlayerChoices(currentRoom: Room): 
-    checkEnemy = currentRoom.getEnemy()
-    rooms = ['Room 1', 'Room 2', 'Room 3', 'Room 4', 'Room 5']
-
     # Kollar om man är i room1-room5
-    if currentRoom.getName() in rooms and checkEnemy.getHealth() > 0:
-        print(f"A {currentRoom.getEnemyInRoom()} wants to fight with you")
+    if currentRoom.getEnemy().getHealth() > 0:
+        print(f"\nA {currentRoom.getEnemyInRoomName()} wants to fight with you")
         
     
-    elif currentRoom.getName() == "Room 5" and checkEnemy.getHealth() <= 0:
-        print('Choices:| go back |')
+    elif currentRoom.getName() == "Room 5" and currentRoom.getEnemy().getHealth() <= 0:
+        print("\nThis is the last room, congratz you've killed everyone!") # ändra till någoit annat kanske?
+      
         
-    
     elif currentRoom.getName() == "Shop":
-        print('You entered ')
+        print('\nYou went into the store ')
         
 
     elif currentRoom.getName() == "Game Room" or currentRoom.getName() == "Black Jack Room":
-        print('Choices: | play | go back |')
+        print('\nYou can play and win more coins')
+
     
-    print("-------------------------")
+    print("-------------------------------")
 
 # Ändrar rum beroende på vart man går (right, left, back)
 
@@ -184,6 +183,9 @@ def newItemWhenKilled(enemy, player:Character):
     elif enemy == 'ninja':
         player.addCoins(30)
         print("** And picked up 30 coins **")
+    elif enemy == 'beholder':
+        player.addCoins(1000000)
+        print('** And picked up a million coins **')
 
 # Printar ut Inventory vapen/// -- Lägga till mer grejer om vi skapar nya Items??
 
@@ -251,8 +253,7 @@ def fightMode(currentRoom: Room, player: Character, inventory):
     if fightEnemy.getHealth() <= 0:
         print(f"You killed {fightEnemy.getName()}")
         newItemWhenKilled(fightEnemy.getName(), player)
-        if fightEnemy.getName() == "beholder":
-            print("\nWow you actually beat the game that's literally impossible..")
+        
 
 def start():
     currentRoom = createWorld()
@@ -308,11 +309,10 @@ def start():
 
 
         if subcommands[0] == 'fight':
-            if currentRoom.getEnemyInRoom().getHealth() > 0 and len(subcommands):
+            if currentRoom.getEnemy().getHealth() > 0:
                 fightMode(currentRoom,player, inventory)
             else:
                 print("You are unable to " + command)
-
 
 
         if command == "play":
@@ -325,16 +325,18 @@ def start():
                 blackjack.play(player)
 
             else:
-                print("You are unable to play ")
+                print("You are unable to play in this room ")
 
         if command == "shop":
             if currentRoom.getName() == "Shop":
                 shop.inStore(player)
             else:
-                print("Unable to shop")
+                print("Unable to shop in this room")
 
         if command == 'I':
             showInvetory(inventory)
+        if command == 'help':
+            f.help()
 
         if command == fist.whatCanThisBe():
             print("\n!!!!! OMFG !!!!!")
@@ -352,11 +354,12 @@ if __name__ == "__main__":
         print("|  'new game' to begin    |")
         print("|  'quit' to quit program |")
         print(" -------------------------")
-        if input("-> ") == "new game":
+        beginning = input("-> ")
+        if beginning == "new game":
             start()
-        elif input("-> ") == "help":
+        if beginning == "help":
             f.help()
-        elif input("-> ") == "quit":
+        if beginning == "quit":
             break
 
 
@@ -364,3 +367,4 @@ if __name__ == "__main__":
 # Ändra så man kan välja saker ut inventory när som helst
 # Ändra alla player state osv till YOU
 # Ändra kanske så man måste skriva small health istället för bara small i printPlayerUSe func
+# Lägg till help så man kan se vad som går att göra baserat på vilket rum man är i
