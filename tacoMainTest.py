@@ -88,10 +88,9 @@ def useItem(input, inventory):
 
 
 def printPlayerState(currentRoom: Room, player: Character):
-    print("\n--------------------")
+    print("\n-------------------------")
     print(f"Location: {currentRoom.getName()}")
-    print(f"Player: | HP: {str(player.getHealth())} ♥ | Coins: {player.getCoins()} |")
-    print("\n('I' for Inventory)")
+    print(f"Player: | HP: {str(player.getHealth())} ♥ | Coins: {player.getCoins()} |\n")
     
 
 # Skriver ut fight status | enemy HP och player HP och vad i inventroy man kan använda
@@ -103,7 +102,6 @@ def printFightState(fightEnemy: EnemyCharacter,player:Character, inventory):
         f"Fighting {fightEnemy.getName()} | HP: {fightEnemy.getHealth()}")
     print("---------------------------")
     print(f"Player HP: {player.getHealth()} ♥")
-    printInventoryChoices(inventory)
     print("---------------------------")
 
 # Skriver ut vilket Item man använder
@@ -144,38 +142,24 @@ def printPlayerUseState(currentItem: Item, player:Character, inventory):
 def printPlayerChoices(currentRoom: Room): 
     checkEnemy = currentRoom.getEnemy()
     rooms = ['Room 1', 'Room 2', 'Room 3', 'Room 4', 'Room 5']
-    # Kollar om man är i room1-room4
-    if currentRoom.getName() in rooms[:-1] and checkEnemy.getHealth() <= 0:
-        print('Choices:| go right | go left | go back |')
-        print("--------------------")
+
     # Kollar om man är i room1-room5
-    elif currentRoom.getName() in rooms and checkEnemy.getHealth() > 0:
-        print(f"Choices:| fight {currentRoom.getEnemyInRoom()} | go back |")
-        print("--------------------")
+    if currentRoom.getName() in rooms and checkEnemy.getHealth() > 0:
+        print(f"A {currentRoom.getEnemyInRoom()} wants to fight with you")
+        
     
     elif currentRoom.getName() == "Room 5" and checkEnemy.getHealth() <= 0:
         print('Choices:| go back |')
-        print("--------------------")
+        
     
-    elif currentRoom.getName() == "Bar":
-        print("Choices:| go right | go left |")
-        print("--------------------")
-
     elif currentRoom.getName() == "Shop":
-        print('Choices:| shop | go back |')
-        print("---------------")
+        print('You entered ')
+        
 
     elif currentRoom.getName() == "Game Room" or currentRoom.getName() == "Black Jack Room":
         print('Choices: | play | go back |')
-
-# Skriver ut vilka vapen man kan använda baserat på vad som finns i inventory
-
-def printInventoryChoices(inventory):
-    inventoryNames = []
-    for i in inventory:
-        inventoryNames.append(i.getItem())
-    joinedList = " | use ".join(inventoryNames)
-    print(f"Choices: | use {joinedList} |")
+    
+    print("-------------------------")
 
 # Ändrar rum beroende på vart man går (right, left, back)
 
@@ -302,6 +286,7 @@ def start():
 
         printPlayerState(currentRoom, player)
         printPlayerChoices(currentRoom)
+        
         command = input("What do you wish to do? ")
         subcommands = command.split(" ")
 
@@ -311,6 +296,7 @@ def start():
                 print("You are unable to " + command)
             else:
                 currentRoom = newRoom
+                
 
         if subcommands[0] == "use":
             item = useItem(subcommands, inventory)
@@ -322,10 +308,12 @@ def start():
 
 
         if subcommands[0] == 'fight':
-            if subcommands[1] != currentRoom.getEnemyInRoom():
-                print("You are unable to " + command)
-            else:
+            if currentRoom.getEnemyInRoom().getHealth() > 0 and len(subcommands):
                 fightMode(currentRoom,player, inventory)
+            else:
+                print("You are unable to " + command)
+
+
 
         if command == "play":
             if currentRoom.getName() == 'Game Room':
