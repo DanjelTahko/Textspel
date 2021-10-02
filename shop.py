@@ -46,7 +46,6 @@ def getItemsFromInventory(inventory):
 
 def inStore(player: Character):
     while True:
-        coins = player.getCoins()
         inventory = player.getInventory()
         mainMenu()
         menuChoice = input("Select menu option: ")
@@ -56,27 +55,27 @@ def inStore(player: Character):
                 print(f"Your coins: {player.getCoins()}")
                 weaponChoice = input("Select menu option: ")
 
-                if weaponChoice.isdigit() and int(weaponChoice) == 1 and coins >= 10 and "knife" not in getItemsFromInventory(inventory):
+                if weaponChoice.isdigit() and int(weaponChoice) == 1 and player.getCoins() >= 10 and "knife" not in getItemsFromInventory(inventory):
                     print("* Added knife to inventory") #(coins -= 10) IF not in inventory
                     player.addToInventory(knife)
                     player.loseCoins(10)
 
-                elif weaponChoice.isdigit() and int(weaponChoice) == 2 and coins >= 15 and "spear" not in getItemsFromInventory(inventory):
+                elif weaponChoice.isdigit() and int(weaponChoice) == 2 and player.getCoins() >= 15 and "spear" not in getItemsFromInventory(inventory):
                     print("* Added spear to inventory") # (coins -= 15)
                     player.addToInventory(spear)
                     player.loseCoins(15)
 
-                elif weaponChoice.isdigit() and int(weaponChoice) == 3 and coins >= 20 and "axe" not in getItemsFromInventory(inventory):
+                elif weaponChoice.isdigit() and int(weaponChoice) == 3 and player.getCoins() >= 20 and "axe" not in getItemsFromInventory(inventory):
                     print("* Added axe to inventory") # (coins -= 20)
                     player.addToInventory(axe)
                     player.loseCoins(20)
 
-                elif weaponChoice.isdigit() and int(weaponChoice) == 4 and coins >= 50 and "sword" not in getItemsFromInventory(inventory):
+                elif weaponChoice.isdigit() and int(weaponChoice) == 4 and player.getCoins() >= 50 and "sword" not in getItemsFromInventory(inventory):
                     print("* Added sword to inventory") # (coins -= 50)
                     player.addToInventory(sword)
                     player.loseCoins(50)
 
-                elif weaponChoice.isdigit() and int(weaponChoice) == 5 and coins >= 50 and "bomb" not in getItemsFromInventory(inventory):
+                elif weaponChoice.isdigit() and int(weaponChoice) == 5 and player.getCoins() >= 50 and "bomb" not in getItemsFromInventory(inventory):
                     print("* Added bombs to inventory") # (coins -= 50)
                     player.addToInventory(bomb)
                     player.loseCoins(50)
@@ -89,16 +88,28 @@ def inStore(player: Character):
         elif menuChoice.isdigit() and int(menuChoice) == 2:
             while True:
                 potionMenu()
-                print(f"Your coins: {coins}")
+                print(f"Your coins: {player.getCoins()}")
                 potionChoice = input("Select menu option: ")
-                if potionChoice.isdigit() and int(potionChoice) == 1 and coins >=10 :
+                if potionChoice.isdigit() and int(potionChoice) == 1 and player.getCoins() >=10 :
                     print("* Added small health potion to inventory") # (coins -= 10)
-                elif potionChoice.isdigit() and int(potionChoice) == 2 and coins >= 15:
+                    player.addToInventory(healthSmall)
+                    player.loseCoins(10)
+
+                elif potionChoice.isdigit() and int(potionChoice) == 2 and player.getCoins() >= 15:
                     print("* Added large health potion to inventory") # (coins -= 15)
-                elif potionChoice.isdigit() and int(potionChoice) == 3 and coins >= 20:
+                    player.addToInventory(healthLarge)
+                    player.loseCoins(15)
+
+                elif potionChoice.isdigit() and int(potionChoice) == 3 and player.getCoins() >= 20:
                     print("* Added critical hit potion to inventory") # (coins -= 20)
-                elif potionChoice.isdigit() and int(potionChoice) == 4 and coins >= 1000:
+                    player.addToInventory(criticHit)
+                    player.loseCoins(20)
+
+                elif potionChoice.isdigit() and int(potionChoice) == 4 and player.getCoins() >= 1000:
                     print("* Added killing punch potion to inventory") # (coins -= 1000)
+                    player.addToInventory(killerPunch)
+                    player.loseCoins(1000)
+
                 elif potionChoice.isdigit() and int(potionChoice) == 5:
                     break
                 else:
@@ -116,10 +127,12 @@ spear = Item("spear", 1, 8)
 axe = Item("axe", 1, 10)
 sword = Item("sword", 3, 15)
 bomb = Item("bomb", 6, 7)
+healthSmall = Item("small health", 0, 0)
+healthLarge = Item("small health", 0, 0)
+criticHit = Item("small health", 0, 0)
+killerPunch = Item("small health", 0, 0)
 
 #Potions
 
-# Add to game!
-# Remove items from main
 # Add potions with own Potion class
 
