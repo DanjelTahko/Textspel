@@ -1,3 +1,4 @@
+from poker import Poker
 from room import Room
 from item import Item
 from enemyCharacter import EnemyCharacter
@@ -5,6 +6,8 @@ from character import Character
 from mastermind import MasterMind
 from gubee import Hangman
 import random
+import shop
+import functions as f
 
 
 def createWorld():
@@ -14,8 +17,9 @@ def createWorld():
     thirdRoom = Room("Room 3")
     fourthRoom = Room("Room 4")
     fifthRoom = Room("Room 5")
-    toilet = Room("Toilet")
+    shop = Room("Shop")
     game = Room("Game Room")
+    bj = Room("Black Jack Room")
     hangmanRoom = Room("Hangman Room")
     trap = Room("Trap")
 
@@ -26,9 +30,10 @@ def createWorld():
     beholder = EnemyCharacter('beholder', 1000, 50, 100)
 
     bar.setRoomtoRight(firstRoom)
-    bar.setRoomtoLeft(toilet)  # Vänstar om BAR - Toilet
+    bar.setRoomtoLeft(shop)  # Vänstar om BAR - Shop
     bar.setEnemytoRoom(air)  # //// Enemy till BAR - Air
-    toilet.setRoomToBack(bar)  # Back om TOILET - Bar
+    shop.setRoomToBack(bar)  # Back om Shop - Bar
+    shop.setEnemytoRoom(air)
 
     firstRoom.setRoomtoRight(game)  # Höger om Room 1 - Game Room
     firstRoom.setRoomtoLeft(secondRoom)  # Vänster om Room 1 - Room 2
@@ -37,7 +42,7 @@ def createWorld():
     game.setRoomToBack(firstRoom)  # Back om Game Room - Room 1
     game.setEnemytoRoom(air)  # //// Enemy till Game Room - Air
 
-    secondRoom.setRoomtoLeft(trap)  # ---- trapROOM??
+    secondRoom.setRoomtoLeft(trap)  
     secondRoom.setRoomtoRight(thirdRoom)  # Höger om Room 2 - Room 3
     secondRoom.setRoomToBack(firstRoom)  # Back om Room 2 - Room 1
     secondRoom.setEnemytoRoom(skeleton)  # Enemy to room (Skeleton)
@@ -47,151 +52,115 @@ def createWorld():
     thirdRoom.setRoomToBack(secondRoom)
     thirdRoom.setEnemytoRoom(ninja)  # Enemy to Room (Ninja)
 
-    fourthRoom.setRoomtoRight(fifthRoom)
+    fourthRoom.setRoomtoRight(bj)
     fourthRoom.setRoomtoLeft(fifthRoom)
     fourthRoom.setRoomToBack(thirdRoom)
-    fourthRoom.setEnemytoRoom(EnemyCharacter('skeleton', 25, 2, 5))
+    fourthRoom.setEnemytoRoom(EnemyCharacter('skeleton', 50, 2, 5))
+
+    bj.setRoomToBack(fourthRoom)
+    bj.setEnemytoRoom(air)
 
     fifthRoom.setRoomToBack(fourthRoom)
     fifthRoom.setEnemytoRoom(beholder)
 
     hangmanRoom.setRoomToBack(thirdRoom)
-    trap.setRoomToBack(toilet)
+    trap.setRoomToBack(bar)
 
     return bar
 
 # Kollar om valet USE finns i inventory och returnar ITEM
 
 
-def useItem(choise, inventory):
-    if choise == "fist" and fist in inventory:
-        return fist
-    elif choise == "knife" and knife in inventory:
-        return knife
-    elif choise == "sword" and sword in inventory:
-        return sword
-    elif choise == 'bomb' and bomb in inventory:
-        return bomb
-    elif choise == "toilet" and currentRoom.getName() == "Toilet":
-        return toilet
+def useItem(itemInput, inventory):
+
+    if len(itemInput) > 2:
+        choice = " ".join(itemInput[1:3])
+    else:
+        choice = itemInput[1]
+                
+    inventoryString = shop.getItemsFromInventory(inventory)
+    if choice in inventoryString:
+        index = inventoryString.index(choice)
+        return inventory[index]
+    
 
 # Skriver ut status | player HP & vilket rum man är i
 
 
-def printPlayerState(currentRoom: Room):
-    print("\n---------------")
-    print("Player HP: " + str(player.getHealth()) + " ♥")
-    print("Location: " + currentRoom.getName())
-    print("('I' for Inventory)")
+def printPlayerState(currentRoom: Room, player: Character):
+    print("\n-------------------------------")
+    print(f"Location: {currentRoom.getName()}")
+    print(f"Health: {str(player.getHealth())} ♥")
+    print(f"Coins: {player.getCoins()} ")
+    
 
 # Skriver ut fight status | enemy HP och player HP och vad i inventroy man kan använda
 
 
-def printFightState(fightEnemy: EnemyCharacter, inventory):
+def printFightState(fightEnemy: EnemyCharacter,player:Character, inventory):
     print("\n===========================")
     print(
         f"Fighting {fightEnemy.getName()} | HP: {fightEnemy.getHealth()}")
     print("---------------------------")
-    print(f"Player HP: {player.getHealth()} ♥")
-    printInventoryChoises(inventory)
+    print(f"Your HP: {player.getHealth()} ♥")
     print("---------------------------")
 
 # Skriver ut vilket Item man använder
 
+def printPlayerUseState(currentItem: Item, player:Character, inventory):
+    
+    if currentItem.getItem() in shop.getItemsFromInventory(inventory):
 
-def printPlayerUseState(currentItem: Item):
-    if currentItem.getItem() == "fist":
-        print(
+        if currentItem.getItem() == "small health":
+            print("\n- Drinking small health potion")
+            print("* Gains 25 ♥")
+            player.gainHealth(25)
+            inventory.remove(currentItem)
+
+        elif currentItem.getItem() == "large health":
+            print("\n- Drinking large health potion")
+            print("* Gains 50 ♥")
+            player.gainHealth(50)
+            inventory.remove(currentItem)
+
+        elif currentItem.getItem() == "critical hit":
+            print("\n- Drinking critical hit potion")
+            None
+
+        elif currentItem.getItem() == "killer punch":
+            print("\n- Drinking killer punch potion")
+            print("You've unlocked the killer punch")
+            inventory.remove(currentItem)
+            fist = Item("fist", 1000, 1000)
+            inventory[0] = fist
+
+        else:
+            print(
             f"\n- Using {currentItem.getItem()}")
-    elif currentItem.getItem() == "knife":
-        print(
-            f"\n- Using {currentItem.getItem()}")
-    elif currentItem.getItem() == "sword":
-        print(
-            f"\n- Using {currentItem.getItem()}")
-    elif currentItem.getItem() == "bomb":
-        print(
-            f"\n- Using {currentItem.getItem()}")
-    elif currentItem.getItem() == "toilet":
-        print(
-            "\n- Using toilet"
-        )
 
 # - Skriver ut olika val beroende på rum och om enemy lever eller inte
-# Bara fram till rum 2, lägg till rum tre *** Denna borde kunna gå att förenkla??
 
+def printPlayerChoices(currentRoom: Room): 
+    # Kollar om man är i room1-room5
+    if currentRoom.getEnemy().getHealth() > 0:
+        print(f"\nA {currentRoom.getEnemyInRoomName()} wants to fight with you")
+        
+    
+    elif currentRoom.getName() == "Room 5" and currentRoom.getEnemy().getHealth() <= 0:
+        print("\nThis is the last room, congratz you've killed everyone!") # ändra till någoit annat kanske?
+      
+        
+    elif currentRoom.getName() == "Shop":
+        print('\nYou went into the store ')
+        
 
-def printPlayerChoises(currentRoom: Room):
-    checkEnemy = currentRoom.getEnemy()
-    if currentRoom.getName() == "Bar":
-        print("Choises:| go right | go left |")
-        print("---------------")
-    elif currentRoom.getName() == "Room 1" and checkEnemy.getHealth() <= 0:
-        print('Choises:| go right | go left | go back |')
-        print("---------------")
-    elif currentRoom.getName() == "Room 1" and checkEnemy.getHealth() > 0:
-        print(f"Choises:| fight {currentRoom.getEnemyInRoom()} | go back |")
-        print("---------------")
-    elif currentRoom.getName() == "Room 2" and checkEnemy.getHealth() <= 0:
-        print('Choises:| go right | go left | go back |')
-        print("---------------")
-    elif currentRoom.getName() == "Room 2" and checkEnemy.getHealth() > 0:
-        print(
-            f'Choises:| fight {currentRoom.getEnemyInRoom()} | go back |')
-        print("---------------")
+    elif currentRoom.getName() == "Game Room" or currentRoom.getName() == "Black Jack Room":
+        print('\nYou can play and win more coins')
 
-    elif currentRoom.getName() == "Room 3" and checkEnemy.getHealth() <= 0:
-        print('Choises:| go right | go left | go back |')
-        print("---------------")
-    elif currentRoom.getName() == "Room 3" and checkEnemy.getHealth() > 0:
-        print(
-            f'Choises:| fight {currentRoom.getEnemyInRoom()} | go back |')
-        print("---------------")
-
-    elif currentRoom.getName() == "Room 4" and checkEnemy.getHealth() <= 0:
-        print('Choises:| go right | go left | go back |')
-        print("---------------")
-    elif currentRoom.getName() == "Room 4" and checkEnemy.getHealth() > 0:
-        print(
-            f'Choises:| fight {currentRoom.getEnemyInRoom()} | go back |')
-        print("---------------")
-
-    elif currentRoom.getName() == "Room 5" and checkEnemy.getHealth() <= 0:
-        print('Choises:| go back |')
-        print("---------------")
-
-    elif currentRoom.getName() == "Room 5" and checkEnemy.getHealth() > 0:
-        print(
-            f'Choises:| fight {currentRoom.getEnemyInRoom()} | go back |')
-        print("---------------")
-
-    elif currentRoom.getName() == "Toilet":
-        print('Choises:| use toilet | go back |')
-        print("---------------")
-    elif currentRoom.getName() == "Game Room":
-        print('Choises: | play | go back |')
-
-# Skriver ut vilka vapen man kan använda baserat på vad som finns i inventory
-
-
-def printInventoryChoises(inventory):
-    count = 0
-    for i in range(len(inventory)):
-        count += 1
-    if count == 1:
-        print(f"Choises: | use {inventory[0].getItem()} |")
-    elif count == 2:
-        print(
-            f"Choises: | use {inventory[0].getItem()} | use {inventory[1].getItem()} |")
-    elif count == 3:
-        print(
-            f"Choises: | use {inventory[0].getItem()} | use {inventory[1].getItem()} | use {inventory[2].getItem()} |")
-    elif count == 4:
-        print(
-            f"Choises: | use {inventory[0].getItem()} | use {inventory[1].getItem()} | use {inventory[2].getItem()} | use {inventory[3].getItem()} |")
+    
+    print("-------------------------------")
 
 # Ändrar rum beroende på vart man går (right, left, back)
-
 
 def getRoomInDirection(currentRoom: Room, direction):
 
@@ -204,167 +173,217 @@ def getRoomInDirection(currentRoom: Room, direction):
 
 # Lägger till Item i listan inventory beroende på vilken enemy som dödades
 
-
-def newItemWhenKilled(enemy, inventory):
-    if enemy == 'drunkman' and knife not in inventory:
-        inventory.append(knife)
-        print("** And picked up knife **")
-    elif enemy == 'skeleton' and sword not in inventory:
-        inventory.append(sword)
-        print("** And picked up sword **")
-    elif enemy == 'ninja' and bomb not in inventory:
-        inventory.append(bomb)
-        print("** And picked up bomb **")
-
-
-# Kollar om man vill spela igen eller inte när man dör/ return True eller False
-
-def playAgain():
-    print("\nYou died :-(")
-    playAgain = input("Do you wanna play again? y/n :")
-    if playAgain == 'y':
-        return True
-    else:
-        print("Hope to see u again!")
-        return False
+def newItemWhenKilled(enemy, player:Character):
+    if enemy == 'drunkman':
+        player.addCoins(10)
+        print("** And picked up 10 coins **")
+    elif enemy == 'skeleton':
+        player.addCoins(20)
+        print("** And picked up 20 coins **")
+    elif enemy == 'ninja':
+        player.addCoins(30)
+        print("** And picked up 30 coins **")
+    elif enemy == 'beholder':
+        player.addCoins(1000000)
+        print('** And picked up a million coins **')
 
 # Printar ut Inventory vapen/// -- Lägga till mer grejer om vi skapar nya Items??
 
-
 def showInvetory(items):
-    print("\n ___________________________________")
-    print("|          ** Inventory **          |")
-    print("|-----------------------------------|")
+    print("\n ---------------------------------------")
+    print("             ** Inventory **           ")
+    print(" --------------------------------------- ")
     for weapon in items:
         if weapon.getItem() == 'fist':
-            print("| Fist: does damage between 2 - 3   |")
+            print("\n| Fist | : does damage between 2 - 3    ")
         if weapon.getItem() == 'knife':
-            print("| Knife: does damage between 0 - 6  |")
+            print("\n| Knife | : does damage between 0 - 6   ")
+        if weapon.getItem() == 'spear':
+            print("\n| Spear | : does damage between 1 - 8   ")
+        if weapon.getItem() == 'axe':
+            print("\n| Axe | : does damage between 1 - 10    ")
         if weapon.getItem() == 'sword':
-            print("| Sword: does damage between 1 - 15 |")
+            print("\n| Sword | : does damage between 3 - 15  ")
         if weapon.getItem() == 'bomb':
-            print("| Bomb: does damage between 6 - 7   |")
+            print("\n| Bomb | : does damage between 6 - 7    ")
+    print("\n --------------------------------------- ")
 
-    print(" ----------------------------------- ")
+    checkList=[]
+    for potion in items:
+        amount = items.count(potion)
+        if potion.getItem() == 'small health' and 'small health' not in checkList:
+            print(f"\n| {amount}x | Small health potion: heals 25 HP   ")
+            checkList.append('small health')           
+        if potion.getItem() == 'large health' and 'large health' not in checkList:
+            print(f"\n| {amount}x | Large health potion: heals 50 HP   ")
+            checkList.append('large health')
+        if potion.getItem() == 'critical hit' and 'critical hit' not in checkList:
+            print(f"\n| {amount}x | Critical hit potion: critic hits   ")
+            checkList.append('critical hit')
+        if potion.getItem() == 'killer punch' and 'killer punch' not in checkList:
+            print(f"\n| {amount}x | Killer punch potion: instant kill ")
+            checkList.append('killer punch')
+    if len(checkList) > 0:
+        print("\n --------------------------------------- ")
 
-
-toilet = Item("toilet", 0, 0)
-fist = Item("fist", 2, 3)
-knife = Item("knife", 0, 6)
-sword = Item("sword", 1, 15)
-bomb = Item("bomb", 6, 7)
-
-
-player = Character(50)
-
-
-def fightMode(currentRoom: Room, inventory):
+def fightMode(currentRoom: Room, player: Character, inventory):
     fightEnemy = currentRoom.getEnemy()
     while fightEnemy.getHealth() > 0 and player.getHealth() > 0:
 
-        printFightState(fightEnemy, inventory)
-        # ändra till siffror eller kanske tom ta bort use?
-        command = input("What do you wish to do? ")
+        printFightState(fightEnemy, player, inventory)
+        command = input("What do you wish to do? ").lower()
         subcommands = command.split(" ")
         if subcommands[0] == "use":
-            item = useItem(subcommands[1], inventory)
+            item = useItem(subcommands, inventory)
             if item == None:
-                print("You are unable to use " + subcommands[1])
+                print("You are unable to " + command)
             else:
-                printPlayerUseState(item)
-                # Kanske ändra nedan till en egen funktion?
-                print(f"* You attack for: {item.setDamage()} dmg")
-                fightEnemy.takeDamage(item.getDamage())
-                if fightEnemy.getHealth() > 0:
-                    print(
-                        f"* {fightEnemy.getName()} attacks for: {fightEnemy.setDamage()} dmg")
-                    player.takeDamage(fightEnemy.getDamage())
+                printPlayerUseState(item, player, inventory)
+                #fight bara ifall man inte använder en potion
+                if item.getMaxDamage() > 0:
+                    print(f"* You attack for: {item.setDamage()} dmg")
+                    fightEnemy.takeDamage(item.getDamage())
+                    if fightEnemy.getHealth() > 0:
+                        print(
+                            f"* {fightEnemy.getName()} attacks for: {fightEnemy.setDamage()} dmg")
+                        player.takeDamage(fightEnemy.getDamage())
+
+        elif command == "i":
+            showInvetory(inventory)
+        
+        elif command == "help":
+            f.helpChoices(currentRoom, True)
 
     if fightEnemy.getHealth() <= 0:
         print(f"You killed {fightEnemy.getName()}")
-        newItemWhenKilled(fightEnemy.getName(), inventory)
-        if fightEnemy.getName() == "beholder":
-            print("\nWow you actually beat the game that's literally impossible..")
+        newItemWhenKilled(fightEnemy.getName(), player)
+        
 
+def start():
+    currentRoom = createWorld()
+    player = Character(50)
+    fist = Item("fist", 2, 3)
+    player.addToInventory(fist)
+    inventory = player.getInventory()
+    mastermind = MasterMind()
+    hangman = Hangman()
+    blackjack = Poker()
+        
+    while True:
 
-currentRoom = createWorld()
-mastermind = MasterMind()
-hangman = Hangman()
-inventory = [fist]
-keepPlaying = True
-while keepPlaying:
+        # Om currentRoom är Hangman
+        if currentRoom.getName() == "Hangman Room":
+            if hangman.play():
+                currentRoom = getRoomInDirection(currentRoom, "back")
+            else:
+                player.setPlayerHealth(0)
 
-    if currentRoom.getName() == "Hangman Room":
-        alive = hangman.play()
-        if alive == True:
+        # Om currentRoom är Trap
+        if currentRoom.getName() == "Trap":
+            print("\nYou walked into a trap & lost 10 ♥ !!!!")
+            player.takeDamage(10)
             currentRoom = getRoomInDirection(currentRoom, "back")
-        else:
-            player.setPlayerHealth(0)
 
-    if currentRoom.getName() == "Trap":
-        print("\nYou walked into a trap & lost 10 ♥ !!!!")
-        player.takeDamage(10)
-        currentRoom = getRoomInDirection(currentRoom, "back")
-
-    # Gör detta till en funktion??
-    if player.getHealth() <= 0:
-        keepPlaying = playAgain()
-        if keepPlaying == True:
-            currentRoom = createWorld()
-            inventory = [fist]
-            player = Character(50)
-            print("\n** Starts Again **")
-        else:
+        # Om player HP är 0 (dvs om man är död!)
+        if player.getHealth() <= 0:
+            print("You died :-(")
             break
 
-    printPlayerState(currentRoom)
-    printPlayerChoises(currentRoom)
-    command = input("What do you wish to do? ")
-    subcommands = command.split(" ")
+        printPlayerState(currentRoom, player)
+        printPlayerChoices(currentRoom)
+        
+        command = input("What do you wish to do? ").lower()
+        subcommands = command.split(" ")
 
-    # Kanske ändra så att när enemey är död så har den status död?
-    # Istället som nu att den kollar currentRoom.enemyhealth < 0
-    if subcommands[0] == "go":
-        newRoom = getRoomInDirection(currentRoom, subcommands[1])
-        if newRoom == None:
-            print("You are unable to move " + subcommands[1])
+        if subcommands[0] == "go":
+            newRoom = getRoomInDirection(currentRoom, subcommands[1])
+            if newRoom == None:
+                print("You are unable to " + command)
+            else:
+                currentRoom = newRoom
+                print(f"- Enters {currentRoom.getName()}")
+                
+
+        elif subcommands[0] == "use":
+            item = useItem(subcommands, inventory)
+            if item == None:
+                print("You are unable to " + command)
+            else:
+                printPlayerUseState(item, player, inventory)
+            
+
+
+        elif subcommands[0] == 'fight':
+            if currentRoom.getEnemy().getHealth() > 0:
+                fightMode(currentRoom,player, inventory)
+            else:
+                print("You are unable to " + command)
+
+
+        elif command == "play":
+            if currentRoom.getName() == 'Game Room':
+                if mastermind.play():
+                    print("\nCongrats you won 10 coins")
+                    player.addCoins(10)
+
+            elif currentRoom.getName() == "Black Jack Room":
+                blackjack.play(player)
+
+            else:
+                print("You are unable to play in this room ")
+
+        elif command == "shop":
+            if currentRoom.getName() == "Shop":
+                shop.inStore(player)
+                currentRoom = getRoomInDirection(currentRoom, "back")
+            else:
+                print("Unable to shop in this room")
+
+        elif command == 'i':
+            showInvetory(inventory)
+
+        elif command == 'help':
+            f.helpChoices(currentRoom, False)
+
         else:
-            currentRoom = newRoom
+            print(f"*Unable to {command}")
 
-    if subcommands[0] == "use":
-        item = useItem(subcommands[1], inventory)
-        if item == None:
-            print("You are unable to use " + subcommands[1])
-        else:
-            printPlayerUseState(item)
+        #if command == fist.whatCanThisBe():
+        #    print("\n!!!!! OMFG !!!!!")
+        #    print("You've unlocked the killing punch")
+        #    fist = Item("fist", 1000, 1000)
+        #    inventory[0] = fist
 
-    if subcommands[0] == 'fight':
-        if subcommands[1] != currentRoom.getEnemyInRoom():
-            print("You are unable to fight " + subcommands[1])
-        else:
-            fightMode(currentRoom, inventory)
+if __name__ == "__main__":
+    while True:
+        print(" _________________________________________________________")
+        print("|                                                          |")
+        print("|   ___    _   _   _   _    ___    _____    ___    _   _   |")
+        print("|  |   \  | | | | |  \| |  / __|  |  __/   / _ \  |  \| |  |")
+        print("|  | |\ | | | | | |   \ | | | __  |  \_   | | | | |   \ |  |")
+        print("|  | |/ | | \_/ | | |\  | | |_\ | |  /__  | |_| | | |\  |  |")
+        print("|  |___/   \___/  |_| \_|  \____/ |_____\  \___/  |_| \_|  |")
+        print("|             ____      __   _       _   _____             |")
+        print("|            |  _  \   |  |  \ \   / /  |  __/             |")
+        print("|            | | \  |  |  |   \ \ / /   |  \_              |") 
+        print("|            | |_/  |  |  |    \   /    |  /__             |") 
+        print("|            |_____/   |__|     \_/     |_____\            |")
+        print("|                                                          |")
+        print("|----------------------------------------------------------|")
+        print("|                          Made by                         |")
+        print("|                   * Daniel & Jonatan *                   |")
+        print("|                                                          |")
+        print("|                   'new game' to begin                    |")
+        print("|                                                          |")
+        print("|                  'help' for how to play                  |")
+        print("|                  'quit' to quit program                  |")
+        print(" ---------------------------------------------------------")
+        beginning = input("-> ")
+        if beginning == "new game":
+            start()
+        if beginning == "help":
+            f.help()
+        if beginning == "quit":
+            break
 
-    if command == "play":
-        if currentRoom.getName() == 'Game Room':
-            moreHealth = mastermind.play()
-            if moreHealth == True:
-                print("\nCongrats player gets 50♥ health")
-                player.gainHealth(50)
-        else:
-            print("You are unable to play ")
 
-    if command == 'I':
-        showInvetory(inventory)
-
-    if command == fist.whatCanThisBe():
-        print("\n!!!!! OMFG !!!!!")
-        print("You've unlocked the killing punch")
-        fist = Item("fist", 1000, 1000)
-        inventory[0] = fist
-
-
-# Ändra i mastermind så man ser hur många rounds kvar
-# Ändra så man måste skriva bokstäver i hänga gubbe
-
-#Ändra knaske inventory till dictionary
-#Lägg till map? som kanske skriver fil så man vet var man är
