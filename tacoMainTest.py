@@ -102,7 +102,7 @@ def printFightState(fightEnemy: EnemyCharacter,player:Character, inventory):
     print(
         f"Fighting {fightEnemy.getName()} | HP: {fightEnemy.getHealth()}")
     print("---------------------------")
-    print(f"Player HP: {player.getHealth()} ♥")
+    print(f"Your HP: {player.getHealth()} ♥")
     print("---------------------------")
 
 # Skriver ut vilket Item man använder
@@ -221,7 +221,7 @@ def showInvetory(items):
             print(f"\n| {amount}x | Critical hit potion: critic hits   ")
             checkList.append('critical hit')
         if potion.getItem() == 'killer punch' and 'killer punch' not in checkList:
-            print(f"\n| {amount}x | Killing punch potion: instant kill ")
+            print(f"\n| {amount}x | Killer punch potion: instant kill ")
             checkList.append('killer punch')
     if len(checkList) > 0:
         print("\n --------------------------------------- ")
@@ -322,7 +322,7 @@ def start():
         elif command == "play":
             if currentRoom.getName() == 'Game Room':
                 if mastermind.play():
-                    print("\nCongrats player gets 10 coins")
+                    print("\nCongrats you won 10 coins")
                     player.addCoins(10)
 
             elif currentRoom.getName() == "Black Jack Room":
@@ -373,8 +373,7 @@ if __name__ == "__main__":
 
 
 # Ändra så alla rum heter något istället för häger eller vänster?
-# Ändra så man kan välja saker ut inventory när som helst
-# Ändra alla player state osv till YOU
+
 # Ändra kanske så man måste skriva small health istället för bara small i printPlayerUSe func
 # Lägg till help så man kan se vad som går att göra baserat på vilket rum man är i
 #ändra så alla input blir små bokstäver 
