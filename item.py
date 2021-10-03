@@ -17,6 +17,9 @@ class Item:
 
     def getDamage(self):
         return self.damage
+    
+    def getMaxDamage(self):
+        return self.maxDamage
 
     def whatCanThisBe(self):
         return 'tacobaco'

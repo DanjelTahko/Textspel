@@ -73,6 +73,7 @@ class MasterMind():
         while rightPlace < len(secretCode) and rounds <= 4:
             guessedCode = self.makeGuess(secretCode)
             rightPlace, evaluateCode = self.checkCode(secretCode, guessedCode)
+            print(f'Rounds left: {4-rounds}\n')
             print(f'Right place: {rightPlace}')
             print(evaluateCode)
             rounds += 1

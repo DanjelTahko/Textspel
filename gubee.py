@@ -138,28 +138,39 @@ class Hangman():
         while (rightLetter < len(codeword) and misses < 6):
 
             answerString = self.isItRight(answer)
-
+            
             if wrong == True:
                 print("Whops, wrong letter!!")
 
             print(f'Guess the word : | {answerString} |')
 
             letter = str(input("Enter letter : "))
+            if letter.isalpha():
+                if len(letter) == 1:
+                    if letter not in guesses:
+    
+                        for i in range(0, len(codeword)):
+                            if letter == codeword[i] and letter != answerString[i]:
+                                answer[i] = letter
+                                rightLetter += 1
+                                if letter not in guesses:
+                                    guesses.append(letter)
+                                wrong = False
 
-            for i in range(0, len(codeword)):
-                if letter == codeword[i] and letter != answerString[i]:
-                    answer[i] = letter
-                    rightLetter += 1
-                    guesses.append(letter)
-                    wrong = False
+                        if letter not in codeword:
+                            misses += 1
+                            guesses.append(letter)
+                            wrong = True
 
-            if letter not in codeword:
-                misses += 1
-                guesses.append(letter)
-                wrong = True
+                        self.display_misses(misses)
+                        print(guesses)
 
-            self.display_misses(misses)
-            print(guesses)
+                    else:
+                        print("\nAlready guessed this letter smh..\n")
+                else:
+                    print("\nOnly ONE letter!")
+            else:
+                print("\nOnly letters!")
 
         if (rightLetter == len(codeword) and misses < 6):
             print(
@@ -169,3 +180,4 @@ class Hangman():
             print(
                 f'You got abducted by aliens and died :-( ')
             return False
+

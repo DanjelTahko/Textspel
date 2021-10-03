@@ -1,4 +1,5 @@
 from __future__ import annotations
+from enemyCharacter import EnemyCharacter
  
 class Room:
     def __init__(self, name):
@@ -34,7 +35,7 @@ class Room:
         self.enemyName = enemy.getName()
         self.enemy = enemy
 
-    def getEnemyInRoom(self):
+    def getEnemyInRoomName(self):
         return self.enemyName
 
     def getEnemy(self):
