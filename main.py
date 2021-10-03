@@ -345,6 +345,10 @@ def start():
         elif command == 'help':
             f.helpChoices(currentRoom, False)
 
+        elif command == 'quit':
+            print("\nEnds game..")
+            break
+
         else:
             print(f"*Unable to {command}")
 
@@ -387,3 +391,5 @@ if __name__ == "__main__":
             break
 
 
+## add critical hit!!
+## add to quit
