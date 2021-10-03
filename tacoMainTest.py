@@ -129,7 +129,7 @@ def printPlayerUseState(currentItem: Item, player:Character, inventory):
 
         elif currentItem.getItem() == "killer punch":
             print("\n- Drinking killer punch potion")
-            print("You've unlocked the killing punch")
+            print("You've unlocked the killer punch")
             inventory.remove(currentItem)
             fist = Item("fist", 1000, 1000)
             inventory[0] = fist

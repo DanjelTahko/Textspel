@@ -33,7 +33,7 @@ def potionMenu():
     print("| 1. Small Health  | Heals 25 HP                      | Cost: 10   |")
     print("| 2. Large Health  | Heals 50 HP                      | Cost: 15   |")
     print("| 3. Critical Hit  | Critical hit until enemy is dead | Cost: 20   |")
-    print("| 4. Killing Punch | Next attack deals 1000 dmg       | Cost: 1000 |") 
+    print("| 4. Killer Punch  | Next attack deals 1000 dmg       | Cost: 500  |") 
     print("|------------------------------------------------------------------|")
     print("| 5. Back                                                          |") 
     print(" ------------------------------------------------------------------ ") 
@@ -105,10 +105,10 @@ def inStore(player: Character):
                     player.addToInventory(criticHit)
                     player.loseCoins(20)
 
-                elif potionChoice.isdigit() and int(potionChoice) == 4 and player.getCoins() >= 10: ### Ändra tillbaka till 1000
+                elif potionChoice.isdigit() and int(potionChoice) == 4 and player.getCoins() >= 500: ### Ändra tillbaka till 1000
                     print("* Added killing punch potion to inventory") 
                     player.addToInventory(killerPunch)
-                    player.loseCoins(10)
+                    player.loseCoins(500)
 
                 elif potionChoice.isdigit() and int(potionChoice) == 5:
                     break
