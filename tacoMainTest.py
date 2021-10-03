@@ -340,8 +340,12 @@ def start():
 
         if command == 'I':
             showInvetory(inventory)
+
         if command == 'help':
             f.help()
+
+        else:
+            print(f"Unable to {command}")
 
         #if command == fist.whatCanThisBe():
         #    print("\n!!!!! OMFG !!!!!")
