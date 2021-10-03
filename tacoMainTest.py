@@ -356,15 +356,28 @@ def start():
 
 if __name__ == "__main__":
     while True:
-        print("\n -------------------------")
-        print("|         Made by         |")
-        print("|   * Daniel & Jonatan *  |")
-        print("|                         |")
-        print("|  'new game' to begin    |")
-        print("|                         |")
-        print("|  'help' for how to play |")
-        print("|  'quit' to quit program |")
-        print(" -------------------------")
+        print(" _________________________________________________________")
+        print("|                                                         |")
+        print("|  ___    _   _   _   _    ___    _____    ____    _   _  |")
+        print("| |   \  | | | | |  \| |  / __|  |  __/   / __ \  |  \| | |")
+        print("| | |\ | | | | | |   \ | | | __  |  \_   | |  | | |   \ | |")
+        print("| | |/ | | \_/ | | |\  | | |_\ | |  /__  | |__| | | |\  | |")
+        print("| |___/   \___/  |_| \_|  \____/ |_____\  \____/  |_| \_| |")
+        print("|             ____      __   _       _   _____            |")
+        print("|            |  _  \   |  |  \ \   / /  |  __/            |")
+        print("|            | | \  |  |  |   \ \ / /   |  \_             |") 
+        print("|            | |_/  |  |  |    \   /    |  /__            |") 
+        print("|            |_____/   |__|     \_/     |_____\           |")
+        print("|                                                         |")
+        print("|---------------------------------------------------------|")
+        print("|                         Made by                         |")
+        print("|                   * Daniel & Jonatan *                  |")
+        print("|                                                         |")
+        print("|                   'new game' to begin                   |")
+        print("|                                                         |")
+        print("|                 'help' for how to play                  |")
+        print("|                 'quit' to quit program                  |")
+        print(" ---------------------------------------------------------")
         beginning = input("-> ")
         if beginning == "new game":
             start()
@@ -372,7 +385,5 @@ if __name__ == "__main__":
             f.help()
         if beginning == "quit":
             break
-
-
 
 
