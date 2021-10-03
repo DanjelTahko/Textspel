@@ -373,6 +373,5 @@ if __name__ == "__main__":
             break
 
 
-# Ändra så alla rum heter något istället för häger eller vänster?
 # Lägg till help så man kan se vad som går att göra baserat på vilket rum man är i
 

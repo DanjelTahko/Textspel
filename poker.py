@@ -34,7 +34,7 @@ class Poker:
 
     def printCards(self, dealerHand, playerHand):
         print(f'\n\nDealers hand:{" | ".join(["", *dealerHand, ""])}\n')
-        print(f'Players hand:{" | ".join(["", *playerHand, ""])}\n')
+        print(f'Your hand:{" | ".join(["", *playerHand, ""])}\n')
 
     def getCardsValueList(self, cards):
         value = [0]
