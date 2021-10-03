@@ -33,7 +33,7 @@ def potionMenu():
     print("| 1. Small Health  | Heals 25 HP                      | Cost: 10   |")
     print("| 2. Large Health  | Heals 50 HP                      | Cost: 15   |")
     print("| 3. Critical Hit  | Critical hit until enemy is dead | Cost: 20   |")
-    print("| 4. Killer Punch  | Next attack deals 1000 dmg       | Cost: 500  |") 
+    print("| 4. Killer Punch  | Every punch will instant kill    | Cost: 500  |") 
     print("|------------------------------------------------------------------|")
     print("| 5. Back                                                          |") 
     print(" ------------------------------------------------------------------ ") 
