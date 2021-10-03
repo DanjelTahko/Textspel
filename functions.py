@@ -22,7 +22,7 @@ def help():
         print("|       ** You can always write 'help' to see you choices **       |")
         print("|                                                                  |")
         print(" ------------------------------------------------------------------")
-        ok = input("Write 'ok' if you understand: ")
+        ok = input("Write 'ok' if you understand: ").lower()
         if ok == 'ok':
             break
 
