@@ -252,7 +252,7 @@ def fightMode(currentRoom: Room, player: Character, inventory):
             showInvetory(inventory)
         
         elif command == "help":
-            f.help()
+            f.helpChoices(currentRoom, True)
 
     if fightEnemy.getHealth() <= 0:
         print(f"You killed {fightEnemy.getName()}")
@@ -343,7 +343,7 @@ def start():
             showInvetory(inventory)
 
         elif command == 'help':
-            f.help()
+            f.helpChoices(currentRoom, False)
 
         else:
             print(f"*Unable to {command}")
@@ -360,8 +360,9 @@ if __name__ == "__main__":
         print("|         Made by         |")
         print("|   * Daniel & Jonatan *  |")
         print("|                         |")
-        print("|  'help' for how to play |")
         print("|  'new game' to begin    |")
+        print("|                         |")
+        print("|  'help' for how to play |")
         print("|  'quit' to quit program |")
         print(" -------------------------")
         beginning = input("-> ")
@@ -373,5 +374,5 @@ if __name__ == "__main__":
             break
 
 
-# Lägg till help så man kan se vad som går att göra baserat på vilket rum man är i
+
 
