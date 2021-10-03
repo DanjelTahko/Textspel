@@ -6,6 +6,7 @@ class Character:
         self.hp = hp
         self.coins = 0
         self.inventory = []
+        self.criticalHit = False
 
     def takeDamage(self, damageTaken):
         self.hp = self.hp - damageTaken
@@ -33,6 +34,15 @@ class Character:
 
     def removeFromInventory(self, item:Item):
         self.inventory.remove(item)
+
+    def setCriticalDamage(self):
+        self.criticalHit = True
+    
+    def removeCriticalDamage(self):
+        self.criticalHit = False
+
+    def getCriticalDamage(self):
+        return self.criticalHit
     
     def getInventory(self):
         return self.inventory

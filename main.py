@@ -125,7 +125,8 @@ def printPlayerUseState(currentItem: Item, player:Character, inventory):
 
         elif currentItem.getItem() == "critical hit":
             print("\n- Drinking critical hit potion")
-            None
+            player.setCriticalDamage()
+            inventory.remove(currentItem)
 
         elif currentItem.getItem() == "killer punch":
             print("\n- Drinking killer punch potion")
@@ -240,9 +241,17 @@ def fightMode(currentRoom: Room, player: Character, inventory):
             else:
                 printPlayerUseState(item, player, inventory)
                 #fight bara ifall man inte använder en potion
-                if item.getMaxDamage() > 0:
+                if item.getMaxDamage() > 0 and player.getCriticalDamage() == False:
                     print(f"* You attack for: {item.setDamage()} dmg")
                     fightEnemy.takeDamage(item.getDamage())
+                    if fightEnemy.getHealth() > 0:
+                        print(
+                            f"* {fightEnemy.getName()} attacks for: {fightEnemy.setDamage()} dmg")
+                        player.takeDamage(fightEnemy.getDamage())
+
+                elif item.getMaxDamage() > 0 and player.getCriticalDamage() == True:
+                    print(f"* You attack for: {item.getMaxDamage()} dmg")
+                    fightEnemy.takeDamage(item.getMaxDamage())
                     if fightEnemy.getHealth() > 0:
                         print(
                             f"* {fightEnemy.getName()} attacks for: {fightEnemy.setDamage()} dmg")
@@ -257,6 +266,8 @@ def fightMode(currentRoom: Room, player: Character, inventory):
     if fightEnemy.getHealth() <= 0:
         print(f"You killed {fightEnemy.getName()}")
         newItemWhenKilled(fightEnemy.getName(), player)
+        if player.getCriticalDamage() == True:
+            player.removeCriticalDamage()
         
 
 def start():
@@ -391,4 +402,3 @@ if __name__ == "__main__":
             break
 
 
-## add critical hit!!
