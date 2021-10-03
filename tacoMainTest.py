@@ -71,12 +71,12 @@ def createWorld():
 # Kollar om valet USE finns i inventory och returnar ITEM
 
 
-def useItem(input, inventory):
+def useItem(itemInput, inventory):
 
-    if len(input) > 2:
-        choice = " ".join(input[1:2])
+    if len(itemInput) > 2:
+        choice = " ".join(itemInput[1:3])
     else:
-        choice = input[1]
+        choice = itemInput[1]
                 
     inventoryString = shop.getItemsFromInventory(inventory)
     if choice in inventoryString:
@@ -248,7 +248,7 @@ def fightMode(currentRoom: Room, player: Character, inventory):
                             f"* {fightEnemy.getName()} attacks for: {fightEnemy.setDamage()} dmg")
                         player.takeDamage(fightEnemy.getDamage())
 
-        elif command == "I":
+        elif command == "i":
             showInvetory(inventory)
         
         elif command == "help":
@@ -339,7 +339,7 @@ def start():
             else:
                 print("Unable to shop in this room")
 
-        elif command == 'I':
+        elif command == 'i':
             showInvetory(inventory)
 
         elif command == 'help':
@@ -375,4 +375,4 @@ if __name__ == "__main__":
 
 # Ändra så alla rum heter något istället för häger eller vänster?
 # Lägg till help så man kan se vad som går att göra baserat på vilket rum man är i
-#ändra så alla input blir små bokstäver 
+
