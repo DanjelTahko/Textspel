@@ -239,16 +239,20 @@ def fightMode(currentRoom: Room, player: Character, inventory):
                 print("You are unable to " + command)
             else:
                 printPlayerUseState(item, player, inventory)
-                #Ändra så detta inte syns ifall man drinker en potion / Eller?
-                print(f"* You attack for: {item.setDamage()} dmg")
-                fightEnemy.takeDamage(item.getDamage())
-                if fightEnemy.getHealth() > 0:
-                    print(
-                        f"* {fightEnemy.getName()} attacks for: {fightEnemy.setDamage()} dmg")
-                    player.takeDamage(fightEnemy.getDamage())
+                #fight bara ifall man inte använder en potion
+                if item.getMaxDamage() > 0:
+                    print(f"* You attack for: {item.setDamage()} dmg")
+                    fightEnemy.takeDamage(item.getDamage())
+                    if fightEnemy.getHealth() > 0:
+                        print(
+                            f"* {fightEnemy.getName()} attacks for: {fightEnemy.setDamage()} dmg")
+                        player.takeDamage(fightEnemy.getDamage())
 
         elif command == "I":
             showInvetory(inventory)
+        
+        elif command == "help":
+            f.help()
 
     if fightEnemy.getHealth() <= 0:
         print(f"You killed {fightEnemy.getName()}")
@@ -330,6 +334,7 @@ def start():
         if command == "shop":
             if currentRoom.getName() == "Shop":
                 shop.inStore(player)
+                currentRoom = getRoomInDirection(currentRoom, "back")
             else:
                 print("Unable to shop in this room")
 
