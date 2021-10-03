@@ -73,8 +73,8 @@ def createWorld():
 
 def useItem(input, inventory):
 
-    if len(input) == 3:
-        choice = " ".join(input[1:])
+    if len(input) > 2:
+        choice = " ".join(input[1:2])
     else:
         choice = input[1]
                 
@@ -312,14 +312,14 @@ def start():
             
 
 
-        if subcommands[0] == 'fight':
+        elif subcommands[0] == 'fight':
             if currentRoom.getEnemy().getHealth() > 0:
                 fightMode(currentRoom,player, inventory)
             else:
                 print("You are unable to " + command)
 
 
-        if command == "play":
+        elif command == "play":
             if currentRoom.getName() == 'Game Room':
                 if mastermind.play():
                     print("\nCongrats player gets 10 coins")
@@ -331,17 +331,17 @@ def start():
             else:
                 print("You are unable to play in this room ")
 
-        if command == "shop":
+        elif command == "shop":
             if currentRoom.getName() == "Shop":
                 shop.inStore(player)
                 currentRoom = getRoomInDirection(currentRoom, "back")
             else:
                 print("Unable to shop in this room")
 
-        if command == 'I':
+        elif command == 'I':
             showInvetory(inventory)
 
-        if command == 'help':
+        elif command == 'help':
             f.help()
 
         else:
@@ -377,3 +377,4 @@ if __name__ == "__main__":
 # Ändra alla player state osv till YOU
 # Ändra kanske så man måste skriva small health istället för bara small i printPlayerUSe func
 # Lägg till help så man kan se vad som går att göra baserat på vilket rum man är i
+#ändra så alla input blir små bokstäver 
