@@ -343,11 +343,11 @@ def start():
         if command == 'help':
             f.help()
 
-        if command == fist.whatCanThisBe():
-            print("\n!!!!! OMFG !!!!!")
-            print("You've unlocked the killing punch")
-            fist = Item("fist", 1000, 1000)
-            inventory[0] = fist
+        #if command == fist.whatCanThisBe():
+        #    print("\n!!!!! OMFG !!!!!")
+        #    print("You've unlocked the killing punch")
+        #    fist = Item("fist", 1000, 1000)
+        #    inventory[0] = fist
 
 if __name__ == "__main__":
     while True:
