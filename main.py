@@ -392,4 +392,3 @@ if __name__ == "__main__":
 
 
 ## add critical hit!!
-## add to quit

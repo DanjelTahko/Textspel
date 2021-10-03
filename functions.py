@@ -39,6 +39,7 @@ def helpChoices(currentRoom: Room, fighting):
         print("| * Go back                 |")
         print("| * Use + item in inventory |")
         print("| * 'I' to see inventory    |")
+        print("| * 'quit' to end game      |")
         print(" --------------------------- ")
     
     elif currentRoom.getName() in rooms and checkEnemy.getHealth() > 0 and fighting == False:
@@ -49,6 +50,7 @@ def helpChoices(currentRoom: Room, fighting):
         print("| * Go back                 |")
         print("| * Use + item in inventory |")
         print("| * 'I' to see inventory    |")
+        print("| * 'quit' to end game      |")
         print(" --------------------------- ")
 
     elif currentRoom.getName() == "Room 5" and checkEnemy.getHealth() <= 0:
@@ -58,6 +60,7 @@ def helpChoices(currentRoom: Room, fighting):
         print("| * Go back                 |")
         print("| * Use + item in inventory |")
         print("| * 'I' to see inventory    |")
+        print("| * 'quit' to end game      |")
         print(" --------------------------- ")
 
     elif currentRoom.getName() == "Bar":
@@ -68,6 +71,7 @@ def helpChoices(currentRoom: Room, fighting):
         print("| * Go left                 |")
         print("| * Use + item in inventory |")
         print("| * 'I' to see inventory    |")
+        print("| * 'quit' to end game      |")
         print(" --------------------------- ")
 
     elif currentRoom.getName() == "Shop":
@@ -78,6 +82,7 @@ def helpChoices(currentRoom: Room, fighting):
         print("| * Go back                 |")
         print("| * Use + item in inventory |")
         print("| * 'I' to see inventory    |")
+        print("| * 'quit' to end game      |")
         print(" --------------------------- ")
 
     elif currentRoom.getName() == "Game Room" or currentRoom.getName() == "Black Jack Room":
@@ -88,6 +93,7 @@ def helpChoices(currentRoom: Room, fighting):
         print("| * Go back                 |")
         print("| * Use + item in inventory |")
         print("| * 'I' to see inventory    |")
+        print("| * 'quit' to end game      |")
         print(" --------------------------- ")
 
     elif fighting == True:
