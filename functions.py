@@ -3,7 +3,7 @@ from room import Room
 
 def help():
     while True:
-        print("\n ---------------------------------------------------------------")
+        print("\n ------------------------------------------------------------------")
         print("|                                                                  |")
         print("|  write 'go' + 'direction' to move between different rooms        |")
         print("|                                                                  |")
@@ -20,7 +20,7 @@ def help():
         print("|                                                                  |")
         print("|       ** You can always write 'help' to see you choices **       |")
         print("|                                                                  |")
-        print(" -----------------------------------------------------------------")
+        print(" ------------------------------------------------------------------")
         ok = input("Write 'ok' if you understand: ")
         if ok == 'ok':
             break
