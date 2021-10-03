@@ -31,6 +31,12 @@ def helpChoices(currentRoom: Room):
 def helpFightChoices(inventory):
 
 
+def printInventoryChoices(inventory):
+    inventoryNames = []
+    for i in inventory:
+        inventoryNames.append(i.getItem())
+    joinedList = " | use ".join(inventoryNames)
+    print(f"Choices: | use {joinedList} |")
 
 
 
