@@ -231,7 +231,7 @@ def fightMode(currentRoom: Room, player: Character, inventory):
     while fightEnemy.getHealth() > 0 and player.getHealth() > 0:
 
         printFightState(fightEnemy, player, inventory)
-        command = input("What do you wish to do? ")
+        command = input("What do you wish to do? ").lower()
         subcommands = command.split(" ")
         if subcommands[0] == "use":
             item = useItem(subcommands, inventory)
@@ -292,7 +292,7 @@ def start():
         printPlayerState(currentRoom, player)
         printPlayerChoices(currentRoom)
         
-        command = input("What do you wish to do? ")
+        command = input("What do you wish to do? ").lower()
         subcommands = command.split(" ")
 
         if subcommands[0] == "go":
@@ -301,9 +301,10 @@ def start():
                 print("You are unable to " + command)
             else:
                 currentRoom = newRoom
+                print(f"- Enters {currentRoom.getName()}")
                 
 
-        if subcommands[0] == "use":
+        elif subcommands[0] == "use":
             item = useItem(subcommands, inventory)
             if item == None:
                 print("You are unable to " + command)
@@ -345,7 +346,7 @@ def start():
             f.help()
 
         else:
-            print(f"Unable to {command}")
+            print(f"*Unable to {command}")
 
         #if command == fist.whatCanThisBe():
         #    print("\n!!!!! OMFG !!!!!")
@@ -373,7 +374,5 @@ if __name__ == "__main__":
 
 
 # Ändra så alla rum heter något istället för häger eller vänster?
-
-# Ändra kanske så man måste skriva small health istället för bara small i printPlayerUSe func
 # Lägg till help så man kan se vad som går att göra baserat på vilket rum man är i
 #ändra så alla input blir små bokstäver 
