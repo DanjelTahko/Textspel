@@ -1,6 +1,7 @@
 from character import Character
 import random
 
+
 class Poker:
 
     def __init__(self):
@@ -66,14 +67,13 @@ class Poker:
         elif ess == 4:
             value[1] = value[0] + 14
             value[0] += 4
-            
 
         return value[:2]
 
     def getFinalValue(self, cardsList):
         bestValue = 0
         for i in cardsList:
-            if i <= 21 and i > bestValue: 
+            if i <= 21 and i > bestValue:
                 bestValue = i
             elif bestValue == 0:
                 bestValue = i
@@ -81,10 +81,10 @@ class Poker:
         return bestValue
 
     def checkWinner(self, valuePlayer, valueDealer):
-        
+
         if valuePlayer > 21:
             return False
-        
+
         elif valueDealer > 21:
             return True
 
@@ -102,30 +102,29 @@ class Poker:
         dealer = self.getFinalValue(self.getCardsValueList(dealerHand))
         print(f"Your value: {player} | Dealer value: {dealer}")
 
-
     def playingRound(self, deck):
-    
+
         playerHand = []
         dealerHand = []
-        
+
         playerHand.append(self.dealOneCard(deck))
         playerHand.append(self.dealOneCard(deck))
         dealerHand.append(self.dealOneCard(deck))
 
-        #Kollar om första handen är black jack!
+        # Kollar om första handen är black jack!
         if self.getFinalValue(self.getCardsValueList(playerHand)) == 21:
-                #Om man har black jack får även dealer ett till kort
-                dealerHand.append(self.dealOneCard(deck))
-                #printar ut korten igen för att se ifall även dealer fått 21
-                self.printCards(dealerHand, playerHand)
-                #Om dealer in fått black jack så vinner man
-                if self.getFinalValue(self.getCardsValueList(dealerHand)) != 21:
-                    print("BLACK JACK!!")
-                    return True
-                #om dealer också fårr black jack så blir det lika
-                else:
-                    print("Amazing!! Two blackjacks!!!")
-                    return None
+            # Om man har black jack får även dealer ett till kort
+            dealerHand.append(self.dealOneCard(deck))
+            # printar ut korten igen för att se ifall även dealer fått 21
+            self.printCards(dealerHand, playerHand)
+            # Om dealer in fått black jack så vinner man
+            if self.getFinalValue(self.getCardsValueList(dealerHand)) != 21:
+                print("BLACK JACK!!")
+                return True
+            # om dealer också fårr black jack så blir det lika
+            else:
+                print("Amazing!! Two blackjacks!!!")
+                return None
 
         else:
             self.printCards(dealerHand, playerHand)
@@ -139,7 +138,7 @@ class Poker:
                     break
                 else:
                     print(f"\nI don't understand what '{again}' means.")
-            
+
             if self.getFinalValue(self.getCardsValueList(playerHand)) > 21:
                 dealerHand.append(self.dealOneCard(deck))
                 self.printCards(dealerHand, playerHand)
@@ -149,14 +148,16 @@ class Poker:
             while self.getFinalValue(self.getCardsValueList(dealerHand)) < 17:
                 dealerHand.append(self.dealOneCard(deck))
                 self.printCards(dealerHand, playerHand)
-            
-            p_checkWinner = self.getFinalValue(self.getCardsValueList(playerHand))
-            d_checkWinner = self.getFinalValue(self.getCardsValueList(dealerHand))
+
+            p_checkWinner = self.getFinalValue(
+                self.getCardsValueList(playerHand))
+            d_checkWinner = self.getFinalValue(
+                self.getCardsValueList(dealerHand))
             self.printFinalValue(playerHand, dealerHand)
-            return self.checkWinner(p_checkWinner,d_checkWinner)
+            return self.checkWinner(p_checkWinner, d_checkWinner)
 
     def play(self, player: Character):
-        
+
         while True:
             coins = player.getCoins()
             # - Skapar kortlek
@@ -170,24 +171,27 @@ class Poker:
             # - Om man vill spela eller avsluta
             startPlaying = input("\nplay or quit? : ")
             if startPlaying == "play":
-                bet = int(input("- Place bet : "))
-                if bet == 0:
-                    print("*You have to bet atleast 1 coin.")
+                bet = input("- Place bet : ")
+                if bet.isdigit():
 
-                elif bet <= coins and bet > 0:
-                    winner = self.playingRound(deck)  # Return True or False
-                    if winner == True:
-                        print("\nYOU WIN!")
-                        player.addCoins(bet)
-                    elif winner == None:
-                        print("\nPUSH!")
-                        continue
+                    if int(bet) == 0:
+                        print("*You have to bet atleast 1 coin.")
+
+                    elif int(bet) <= coins and int(bet) > 0:
+                        winner = self.playingRound(
+                            deck)  # Return True or False
+                        if winner == True:
+                            print("\nYOU WIN!")
+                            player.addCoins(int(bet))
+                        elif winner == None:
+                            print("\nPUSH!")
+                            continue
+                        else:
+                            print("\nYOU LOSE!")
+                            player.loseCoins(int(bet))
+
                     else:
-                        print("\nYOU LOSE!")
-                        player.loseCoins(bet)
-
-                else:
-                    print("*You don't have that amount.")
+                        print("*You don't have that amount.")
 
             elif startPlaying == "quit":
                 break
@@ -196,5 +200,3 @@ class Poker:
                 print(f"\nI don't understand what '{startPlaying}' means.")
 
         print("\nHope to see you again!")
-
-
