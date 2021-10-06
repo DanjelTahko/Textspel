@@ -120,7 +120,7 @@ class Hangman():
         print("=========================================\n")
         print("             UFO ABDUCTION\n")
         print("=========================================\n")
-        print("OH F*CK, You've been abducted by aliens!!\nGuess the the right word to save yourself \n")
+        print("OH F*CK, You've been abducted by aliens!!\nGuess the right word to save yourself.. \n")
 
     def play(self):
 
