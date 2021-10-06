@@ -1,6 +1,15 @@
-
 from character import Character
 from item import Item
+
+knife = Item("knife", 0, 6)
+spear = Item("spear", 1, 8)
+axe = Item("axe", 1, 10)
+sword = Item("sword", 3, 15)
+bomb = Item("bomb", 6, 7)
+healthSmall = Item("small health", 0, 0)
+healthLarge = Item("large health", 0, 0)   
+criticHit = Item("critical hit", 0, 0)
+killerPunch = Item("killer punch", 0, 0)
 
 
 def mainMenu():
@@ -40,8 +49,8 @@ def potionMenu():
 
 def getItemsFromInventory(inventory):
     inventoryStrings = []
-    for i in inventory:
-        inventoryStrings.append(i.getItem())
+    for item in inventory:
+        inventoryStrings.append(item.getItem())
     return inventoryStrings
 
 def inStore(player: Character):
@@ -121,18 +130,8 @@ def inStore(player: Character):
         else:
             print("Not valid choice")
 
-#Weapons
-knife = Item("knife", 0, 6)
-spear = Item("spear", 1, 8)
-axe = Item("axe", 1, 10)
-sword = Item("sword", 3, 15)
-bomb = Item("bomb", 6, 7)
-healthSmall = Item("small health", 0, 0)
-healthLarge = Item("large health", 0, 0)   
-criticHit = Item("critical hit", 0, 0)
-killerPunch = Item("killer punch", 0, 0)
 
-#Potions
 
-# Add potions with own Potion class
+
+
 
