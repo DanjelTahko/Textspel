@@ -91,7 +91,7 @@ def useItem(itemInput, inventory):
         index = inventoryStrings.index(choice)
         return inventory[index]
 
-
+# Fightmode :-)
 def fightMode(currentRoom: Room, player: Character, inventory):
 
     fightEnemy = currentRoom.getEnemy()

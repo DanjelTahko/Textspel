@@ -21,5 +21,6 @@ class Item:
     def getMaxDamage(self):
         return self.maxDamage
 
+    # Ett fusk som är avstängt atm
     def whatCanThisBe(self):
         return 'tacobaco'

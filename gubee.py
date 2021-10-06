@@ -1,5 +1,3 @@
-
-
 class Hangman():
 
     def __init__(self, misses=0):
